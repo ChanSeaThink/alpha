@@ -36,7 +36,7 @@ INSTALLED_APPS = (
     #'django.contrib.contenttypes',
     #'django.contrib.sessions',
     #'django.contrib.messages',
-    #'django.contrib.staticfiles',
+    'django.contrib.staticfiles',
     'lnr',#login and regist注册登录app
     'blog',#此app涵盖了评测app页面的所有后端。
 )
