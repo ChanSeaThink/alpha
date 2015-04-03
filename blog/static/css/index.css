@@ -300,7 +300,7 @@ ul
 #log_box>div
 	{
 	width:296px;
-	margin:0px auto 57px auto;
+	margin:0px auto 54.5px auto;
 	border-radius:8px;
 	}
 #log_box>div>input:focus
@@ -334,6 +334,13 @@ ul
 	border-bottom-right-radius:8px;
 	border-left:solid 1px #c1c1c1;
 	}
+.account p
+	{
+	position:absolute;
+	margin-top:0px;
+	margin-left:66px;
+	color:red;
+	}
 #reg_box
 	{
 	display:none;
@@ -349,21 +356,16 @@ ul
 	{
 	outline:none;
 	}
-#reg_box>div>p
-	{
-	float:right;
-	margin-top:12px;
-	}
 #reg_box input
 	{
 	font-size:18px;
 	}
-#code_check
+.code_check
 	{
 	margin:0 auto;
 	width:300px;
 	}
-#code_check input
+.code_check input
 	{
 	width:145px;
 	height:50px;
@@ -372,20 +374,32 @@ ul
 	border:solid 2px #c1c1c1;
 	border-radius:8px;
 	}
-#code_check input:focus
+.code_check input:focus
 	{
 	outline:none;
 	}
-#code_check img
+.code_check div
+	{
+	display:inline;
+	}
+.code_check div p
+	{
+	float:left;
+	margin-top:10px;
+	margin-left:15px;
+	color:red;
+	}
+.code_check img
 	{
 	float:right;
 	margin-top:2px;
 	width:145px;
 	height:50px;
 	}
-#code_check>p
+.code_check>p
 	{
 	float:right;
+	clear:right;
 	margin-top:12px;
 	margin-right:10px;
 	color:#444444;
