@@ -239,7 +239,7 @@
 					<p id="move_stick"></p>
 					<p class="clear"></p>
 				</div>
-				<div id="log_box">
+				<form id="log_box">
 					<div id="email" class="account">
 						<img src="{% static "img/mail.png" %}">
 						<input type="text" maxlength="30" placeholder="邮箱">
@@ -247,10 +247,10 @@
 					</div>
 					<div id="password" class="account">
 						<img src="{% static "img/lock.png" %}">
-						<input type="text" maxlength="16" placeholder="密码">
+						<input type="password" maxlength="16" placeholder="密码">
 						<p></p>
 					</div>
-					<div id="code_check">
+					<div class="code_check">
 						<img src="">
 						<p id="hint">看不清楚？换一张</p>
 						<div>
@@ -258,8 +258,8 @@
 							<p></p>
 						</div>
 					</div>
-				</div>
-				<div id="reg_box">
+				</form>
+				<form id="reg_box">
 					<div class="account">
 						<img src="{% static "img/mail.png" %}">
 						<input type="text" maxlength="30" placeholder="账户">
@@ -275,7 +275,7 @@
 						<input type="text" maxlength="16" placeholder="密码">
 						<p></p>
 					</div>
-					<div id="code_check">
+					<div class="code_check">
 						<img src="">
 						<p id="hint">看不清楚？换一张</p>
 						<div>
@@ -283,7 +283,7 @@
 							<p></p>
 						</div>
 					</div>
-				</div>
+				</form>
 				<div id="log_button">登录</div>
 				<div id="reg_button">注册</div>
 			</div>
