@@ -7,4 +7,7 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
     # url(r'^admin/', include(admin.site.urls)),
     url(r'^index$', 'blog.views.index'),
+    url(r'^regist$', 'lnr.views.regist'),
+    url(r'^login$', 'lnr.views.login'),
+    url(r'^getCAPTCHA','lnr.views.getCAPTCHA'),
 )

@@ -239,7 +239,7 @@
 					<p id="move_stick"></p>
 					<p class="clear"></p>
 				</div>
-				<form id="log_box">
+				<form id="log_box" method="post" action="login">
 					<div id="email" class="account">
 						<img src="{% static "img/mail.png" %}">
 						<input type="text" maxlength="30" placeholder="邮箱">
@@ -251,7 +251,7 @@
 						<p></p>
 					</div>
 					<div class="code_check">
-						<img src="">
+						<img onclick="this.setAttribute('src','/getCAPTCHA/?nocache='+Math.random());" src="/getCAPTCHA">
 						<p id="hint">看不清楚？换一张</p>
 						<div>
 							<input type="text"  maxlength="4"placeholder="验证码">
@@ -259,7 +259,7 @@
 						</div>
 					</div>
 				</form>
-				<form id="reg_box">
+				<form id="reg_box" method="post" action="regist">
 					<div class="account">
 						<img src="{% static "img/mail.png" %}">
 						<input type="text" maxlength="30" placeholder="账户">
@@ -276,7 +276,7 @@
 						<p></p>
 					</div>
 					<div class="code_check">
-						<img src="">
+						<img onclick="this.setAttribute('src','/getCAPTCHA/?nocache='+Math.random());" src="/getCAPTCHA">
 						<p id="hint">看不清楚？换一张</p>
 						<div>
 							<input type="text"  maxlength="4" placeholder="验证码">
