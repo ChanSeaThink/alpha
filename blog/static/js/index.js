@@ -77,6 +77,7 @@ window.onload=function(){
 		$("#move_stick").css("left",0);
 		$("#lr_box input").val("");
 		$(".account p,.code_check p:eq(1)").text("");
+		$(".code_check:eq(0) img").attr({"src":"/getCAPTCHA/?nocache="+Math.random()});
 		$("#log_box input:eq(0)").focus();
 		//var h=parseInt($("#lr_box").css("height"));
 		//$("#lr_box").css({top:"50%",marginTop:-h/2+"px"});
@@ -87,6 +88,7 @@ window.onload=function(){
 		$("#move_stick").css("left","88px");
 		$("#lr_box input").val("");
 		$(".account p,.code_check p:eq(1)").text("");
+		$(".code_check:eq(1) img").attr({"src":"/getCAPTCHA/?nocache="+Math.random()});
 		$("#reg_box input:eq(0)").focus();
 		//var h=parseInt($("#lr_box").css("height"));
 		//$("#lr_box").css({top:"50%",marginTop:-h/2+"px"});
@@ -102,6 +104,7 @@ window.onload=function(){
 			},300);
 			setTimeout(function(){
 				$("#log_box input:eq(0)").focus();
+				$(".code_check:eq(0) img").attr({"src":"/getCAPTCHA/?nocache="+Math.random()});
 			},600);
 			$("#move_stick").animate({left:0},200);
 		}
@@ -120,12 +123,19 @@ window.onload=function(){
 			},300);
 			setTimeout(function(){
 				$("#reg_box input:eq(0)").focus();
+				$(".code_check:eq(1) img").attr({"src":"/getCAPTCHA/?nocache="+Math.random()});
 			},600);
 			$("#move_stick").animate({left:"88px"},200);
 		}
 		else {
 			$("#reg_box input:eq(0)").focus();
 		}
+	});
+	$(".code_check:eq(0) img,.code_check:eq(0) > p").click(function(){
+		$(".code_check:eq(0) img").attr({"src":"/getCAPTCHA/?nocache="+Math.random()});
+	});
+	$(".code_check:eq(1) img,.code_check:eq(1) > p").click(function(){
+		$(".code_check:eq(1) img").attr({"src":"/getCAPTCHA/?nocache="+Math.random()});
 	});
 	$("#close,#popup_bottom").click(function(){
 		$("#popup,#lr_box,#log_box,#reg_box,#log_button,#reg_button,#origin_pic").hide();
