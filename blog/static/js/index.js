@@ -74,7 +74,7 @@ window.onload=function(){
 	$("#log").click(function(){
 		$("#log_box,#log_button").css({left:"0px"});
 		$("#popup,#lr_box,#log_box,#log_button").show();
-		$("#move_stick").css("left",0);
+		$("#lr_title p").css("left","-2px");
 		$("#lr_box input").val("");
 		$(".account p,.code_check p:eq(1)").text("");
 		$(".code_check:eq(0) img").attr({"src":"/getCAPTCHA/?nocache="+Math.random()});
@@ -85,7 +85,7 @@ window.onload=function(){
 	$("#reg").click(function(){
 		$("#reg_box,#reg_button").css({left:"0px"});
 		$("#popup,#lr_box,#reg_box,#reg_button").show();
-		$("#move_stick").css("left","88px");
+		$("#lr_title p").css("left","87px");
 		$("#lr_box input").val("");
 		$(".account p,.code_check p:eq(1)").text("");
 		$(".code_check:eq(1) img").attr({"src":"/getCAPTCHA/?nocache="+Math.random()});
@@ -94,7 +94,7 @@ window.onload=function(){
 		//$("#lr_box").css({top:"50%",marginTop:-h/2+"px"});
 	});
 	$("#login").click(function(){
-		if($("#move_stick").css("left")=="88px"){
+		if($("#lr_title p").css("left")=="87px"){
 			$("#log_box,#log_button").css({left:"-450px"});
 			$("#reg_box,#reg_button").animate({left:"450px"},300);
 			setTimeout(function(){
@@ -106,14 +106,14 @@ window.onload=function(){
 				$("#log_box input:eq(0)").focus();
 				$(".code_check:eq(0) img").attr({"src":"/getCAPTCHA/?nocache="+Math.random()});
 			},600);
-			$("#move_stick").animate({left:0},200);
+			$("#lr_title p").animate({left:"-2px"},200);
 		}
 		else {
 			$("#log_box input:eq(0)").focus();
 		}
 	});
 	$("#regis").click(function(){
-		if($("#move_stick").css("left")=="0px"){
+		if($("#lr_title p").css("left")=="-2px"){
 			$("#reg_box,#reg_button").css({left:"450px"});
 			$("#log_box,#log_button").animate({left:"-450px"},300);
 			setTimeout(function(){
@@ -125,7 +125,7 @@ window.onload=function(){
 				$("#reg_box input:eq(0)").focus();
 				$(".code_check:eq(1) img").attr({"src":"/getCAPTCHA/?nocache="+Math.random()});
 			},600);
-			$("#move_stick").animate({left:"88px"},200);
+			$("#lr_title p").animate({left:"87px"},200);
 		}
 		else {
 			$("#reg_box input:eq(0)").focus();
@@ -192,10 +192,84 @@ window.onload=function(){
 		}
 	});
 	$("#log_button").click(function(){
-		$('#log_box').submit();
+		var email=$("#log_box input:eq(0)").val();
+		var password=$("#log_box input:eq(1)").val();
+		var valicode=$("#log_box input:eq(2)").val();
+		if(!(email)){
+			$("#log_box p:eq(0)").text("值为空！");
+			flag1[0]=0;
+		}
+		if(!(password)){
+			$("#log_box p:eq(1)").text("值为空！");
+			flag1[1]=0;
+		}
+		if(valicode.length!=4){
+			$("#log_box p:eq(3)").text("位数不够！");
+			flag1[2]=0;
+		}
+		else{
+			flag1[2]=1;
+		}
+		if(flag1[0]==1&&flag1[1]==1&&flag1[2]==1){
+			var xmlhttp=new XMLHttpRequest();
+			xmlhttp.open("POST","/login",false);
+			xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+			xmlhttp.send("email="+email+"&password="+password+"&valicode="+code);
+			var AjaxObj=eval("("+xmlhttp.responseText+")");
+			if(AjaxObj.email){
+				$("#log_box p:eq(0)").text(AjaxObj.email);
+			}
+			if(AjaxObj.password){
+				$("#log_box p:eq(1)").text(AjaxObj.password);
+			}
+			if(AjaxObj.valicode){
+				$("#log_box p:eq(3)").text(AjaxObj.valicode);
+			}
+		}
 	});
 	$("#reg_button").click(function(){
-		$("#reg_box").submit();
+		var email=$("#reg_box input:eq(0)").val();
+		var username=$("#reg_box input:eq(1)").val();
+		var password=$("#reg_box input:eq(2)").val();
+		var code=$("#reg_box input:eq(3)").val();
+		if(!(email)){
+			$("#reg_box p:eq(0)").text("值为空！");
+			flag2[0]=0;
+		}
+		if(!(username)){
+			$("#reg_box p:eq(1)").text("值为空！");
+			flag2[1]=0;
+		}
+		if(!(password)){
+			$("#reg_box p:eq(2)").text("值为空！");
+			flag2[2]=0;
+		}
+		if(code.length!=4){
+			$("#reg_box p:eq(4)").text("位数不够！");
+			flag2[3]=0;
+		}
+		else{
+			flag2[3]=1;
+		}
+		if(flag2[0]==1&&flag2[1]==1&&flag2[2]==1&&flag2[3]==1){
+			var xmlhttp=new XMLHttpRequest();
+			xmlhttp.open("POST","/regist",false);
+			xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+			xmlhttp.send("email="+email+"&username="+username+"&password="+password+"&valicode="+code);
+			var AjaxObj=eval("("+xmlhttp.responseText+")");
+			if(AjaxObj.email){
+				$("#reg_box p:eq(0)").text(AjaxObj.email);
+			}
+			if(AjaxObj.username){
+				$("#reg_box p:eq(1)").text(AjaxObj.username);
+			}
+			if(AjaxObj.password){
+				$("#reg_box p:eq(2)").text(AjaxObj.password);
+			}
+			if(AjaxObj.valicode){
+				$("#reg_box p:eq(4)").text(AjaxObj.valicode);
+			}
+		}
 	});
 	//登录注册输入框字符检测
 	var pattern1=/[^!-z]/,pattern2=/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/,pattern3=/^[\u4e00-\u9fa5A-Za-z0-9_]+$/;

@@ -285,12 +285,13 @@ ul
 	color:#6699ff;
 	cursor:pointer;
 	}
-#move_stick
+#lr_title p
 	{
 	position:relative;
 	top:14.5px;
-	width:81px;
+	width:83px;
 	border:solid 3px #6699ff;
+	border-radius:3px;
 	}
 #log_box
 	{
