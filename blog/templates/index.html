@@ -262,24 +262,24 @@
 				<form id="reg_box" method="post" action="regist">
 					<div class="account">
 						<img src="{% static "img/mail.png" %}">
-						<input type="text" maxlength="30" placeholder="账户">
+						<input type="text" maxlength="30" placeholder="账户" name="email">
 						<p></p>
 					</div>
 					<div class="account">
 						<img src="{% static "img/t-shirt.png" %}">
-						<input type="text" maxlength="8" placeholder="昵称">
+						<input type="text" maxlength="8" placeholder="昵称" name="username">
 						<p></p>
 					</div>
 					<div class="account">
 						<img src="{% static "img/lock.png" %}">
-						<input type="text" maxlength="16" placeholder="密码">
+						<input type="text" maxlength="16" placeholder="密码" name="password">
 						<p></p>
 					</div>
 					<div class="code_check">
 						<img src="">
 						<p id="hint">看不清楚？换一张</p>
 						<div>
-							<input type="text"  maxlength="4" placeholder="验证码">
+							<input type="text"  maxlength="4" placeholder="验证码" name="valicode">
 							<p></p>
 						</div>
 					</div>
