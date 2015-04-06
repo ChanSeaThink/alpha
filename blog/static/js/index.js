@@ -194,7 +194,7 @@ window.onload=function(){
 	$("#log_button").click(function(){
 		var email=$("#log_box input:eq(0)").val();
 		var password=$("#log_box input:eq(1)").val();
-		var valicode=$("#log_box input:eq(2)").val();
+		var code=$("#log_box input:eq(2)").val();
 		if(!(email)){
 			$("#log_box p:eq(0)").text("值为空！");
 			flag1[0]=0;
@@ -203,7 +203,7 @@ window.onload=function(){
 			$("#log_box p:eq(1)").text("值为空！");
 			flag1[1]=0;
 		}
-		if(valicode.length!=4){
+		if(code.length!=4){
 			$("#log_box p:eq(3)").text("位数不够！");
 			flag1[2]=0;
 		}
