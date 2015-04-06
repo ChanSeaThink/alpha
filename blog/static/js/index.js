@@ -272,7 +272,10 @@ window.onload=function(){
 		}
 	});
 	//登录注册输入框字符检测
-	var pattern1=/[^!-z]/,pattern2=/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/,pattern3=/^[\u4e00-\u9fa5A-Za-z0-9_]+$/;
+	var pattern1=/[^!-z]/,
+	pattern2=/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/,
+	pattern3=/^[\u4e00-\u9fa5A-Za-z0-9_]+$/,
+	pattern4=/[^a-zA-Z0-9]/;
 	var flag1=new Array(),flag2=new Array();
 	$("#log_box input:eq(0)").on({
 		"input":function(){
@@ -302,6 +305,28 @@ window.onload=function(){
 		}
 		else {
 			$("#log_box p:eq(1)").text("");
+			flag1[1]=1;
+		}
+	});
+	$("#log_box input:eq(2)").on("input",function(){
+		var str=$(this).val();
+		if(pattern4.test(str)){
+			$("#log_box p:eq(3)").text("字符有误");
+			flag1[1]=0;
+		}
+		else {
+			$("#log_box p:eq(2)").text("");
+			flag1[1]=1;
+		}
+	});
+	$("#reg_box input:eq(3)").on("input",function(){
+		var str=$(this).val();
+		if(pattern4.test(str)){
+			$("#reg_box p:eq(4)").text("字符有误");
+			flag1[1]=0;
+		}
+		else {
+			$("#reg_box p:eq(4)").text("");
 			flag1[1]=1;
 		}
 	});
