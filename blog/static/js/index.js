@@ -192,8 +192,6 @@ window.onload=function(){
 		}
 	});
 	$("#log_button").click(function(){
-		$("#log_box").submit();
-		/*
 		var email=$("#log_box input:eq(0)").val();
 		var password=$("#log_box input:eq(1)").val();
 		var code=$("#log_box input:eq(2)").val();
@@ -230,11 +228,8 @@ window.onload=function(){
 				}
 			}
 		}
-		//*/
 	});
 	$("#reg_button").click(function(){
-		$("#reg_box").submit();
-		/*/
 		var email=$("#reg_box input:eq(0)").val();
 		var username=$("#reg_box input:eq(1)").val();
 		var password=$("#reg_box input:eq(2)").val();
@@ -279,7 +274,6 @@ window.onload=function(){
 				}
 			}
 		}
-		//*/
 	});
 	//登录注册输入框字符检测
 	var pattern1=/[^!-z]/,
