@@ -17,6 +17,11 @@ def regist(request):
     password = request.POST['password']
     valicode = request.POST['valicode']
 
+    if valicode != request.session['CAPTCHA']:
+        jsonObject = json.dumps({'valicode':'验证码错误!'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+
     user_exist = User.objects.filter(UserAccount__exact=email)
     if user_exist:
         jsonObject = json.dumps({'email':'邮箱已存在!'},ensure_ascii = False)
@@ -26,11 +31,6 @@ def regist(request):
     name_exist = User.objects.filter(UserName__exact=username)
     if name_exist:
         jsonObject = json.dumps({'username':'用户名已存在!'},ensure_ascii = False)
-        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
-        return HttpResponse(jsonObject,content_type="application/json")
-
-    if valicode != request.session['CAPTCHA']:
-        jsonObject = json.dumps({'valicode':'验证码错误!'},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
 
@@ -51,7 +51,38 @@ def regist(request):
 
 
 def login(request):
-    return HttpResponse('login')
+    email = request.POST['email']
+    password = request.POST['password']
+    valicode = request.POST['valicode']
+
+    print email
+    print password
+    print valicode
+    
+    if valicode != request.session['CAPTCHA']:
+        jsonObject = json.dumps({'valicode':'验证码错误!'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+
+    try:
+        user_data = User.objects.get(UserAccount = email)
+    except User.DoesNotExist:
+        jsonObject = json.dumps({'username':'账号不存在，请确认!'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+
+    shpw = sha1()
+    shpw.update(password + str(user_data.Time)[0:19])
+    spw = shpw.hexdigest()
+    if spw != user_data.UserPassword:
+        jsonObject = json.dumps({'username':'密码错误请重新输入!'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+    else:
+        user_data.LastLoginTime = datetime.now()
+        user_data.save()
+        del request.session['CAPTCHA']
+        return HttpResponse('login')
 
 def getCAPTCHA(request):
     sh = sha1()
