@@ -54,10 +54,6 @@ def login(request):
     email = request.POST['email']
     password = request.POST['password']
     valicode = request.POST['valicode']
-
-    print email
-    print password
-    print valicode
     
     if valicode != request.session['CAPTCHA']:
         jsonObject = json.dumps({'valicode':'验证码错误!'},ensure_ascii = False)
@@ -67,15 +63,17 @@ def login(request):
     try:
         user_data = User.objects.get(UserAccount = email)
     except User.DoesNotExist:
-        jsonObject = json.dumps({'username':'账号不存在，请确认!'},ensure_ascii = False)
+        jsonObject = json.dumps({'email':'账号不存在，请确认!'},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
 
     shpw = sha1()
     shpw.update(password + str(user_data.Time)[0:19])
     spw = shpw.hexdigest()
+    print spw
+    print user_data.UserPassword
     if spw != user_data.UserPassword:
-        jsonObject = json.dumps({'username':'密码错误请重新输入!'},ensure_ascii = False)
+        jsonObject = json.dumps({'password':'密码错误请重新输入!'},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
     else:
