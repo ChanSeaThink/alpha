@@ -308,26 +308,50 @@ window.onload=function(){
 			flag1[1]=1;
 		}
 	});
-	$("#log_box input:eq(2)").on("input",function(){
-		var str=$(this).val();
-		if(pattern4.test(str)){
-			$("#log_box p:eq(3)").text("字符有误");
-			flag1[1]=0;
-		}
-		else {
-			$("#log_box p:eq(2)").text("");
-			flag1[1]=1;
+	$("#log_box input:eq(2)").on({
+		"input":function(){
+			var str=$(this).val();
+			if(pattern4.test(str)){
+				$("#log_box p:eq(3)").text("字符有误");
+				flag1[1]=0;
+			}
+			else {
+				$("#log_box p:eq(3)").text("");
+				flag1[1]=1;
+			}
+		},
+		"blur":function(){
+			var str=$(this).val();
+			if(str.length!=4){
+				$("#log_box p:eq(3)").text("位数不够！");
+				flag1[2]=0;
+			}
+			else{
+				flag1[2]=1;
+			}
 		}
 	});
-	$("#reg_box input:eq(3)").on("input",function(){
-		var str=$(this).val();
-		if(pattern4.test(str)){
-			$("#reg_box p:eq(4)").text("字符有误");
-			flag1[1]=0;
-		}
-		else {
-			$("#reg_box p:eq(4)").text("");
-			flag1[1]=1;
+	$("#reg_box input:eq(3)").on({
+		"input":function(){
+			var str=$(this).val();
+			if(pattern4.test(str)){
+				$("#reg_box p:eq(4)").text("字符有误");
+				flag1[1]=0;
+			}
+			else {
+				$("#reg_box p:eq(4)").text("");
+				flag1[1]=1;
+			}
+		},
+		"blur":function(){
+			var str=$(this).val();
+			if(str.length!=4){
+				$("#reg_box p:eq(4)").text("位数不够！");
+				flag1[2]=0;
+			}
+			else{
+				flag1[2]=1;
+			}
 		}
 	});
 	$("#reg_box input:eq(0)").on({
