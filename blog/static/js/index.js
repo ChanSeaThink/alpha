@@ -215,15 +215,17 @@ window.onload=function(){
 			xmlhttp.open("POST","/login",false);
 			xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 			xmlhttp.send("email="+email+"&password="+password+"&valicode="+code);
-			var AjaxObj=eval("("+xmlhttp.responseText+")");
-			if(AjaxObj.email){
-				$("#log_box p:eq(0)").text(AjaxObj.email);
-			}
-			if(AjaxObj.password){
-				$("#log_box p:eq(1)").text(AjaxObj.password);
-			}
-			if(AjaxObj.valicode){
-				$("#log_box p:eq(3)").text(AjaxObj.valicode);
+			if(xmlhttp.responseText.charAt(0)=="{"){
+				var AjaxObj=eval("("+xmlhttp.responseText+")");
+				if(AjaxObj.email){
+					$("#log_box p:eq(0)").text(AjaxObj.email);
+				}
+				if(AjaxObj.password){
+					$("#log_box p:eq(1)").text(AjaxObj.password);
+				}
+				if(AjaxObj.valicode){
+					$("#log_box p:eq(3)").text(AjaxObj.valicode);
+				}
 			}
 		}
 	});
@@ -256,18 +258,20 @@ window.onload=function(){
 			xmlhttp.open("POST","/regist",false);
 			xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 			xmlhttp.send("email="+email+"&username="+username+"&password="+password+"&valicode="+code);
-			var AjaxObj=eval("("+xmlhttp.responseText+")");
-			if(AjaxObj.email){
-				$("#reg_box p:eq(0)").text(AjaxObj.email);
-			}
-			if(AjaxObj.username){
-				$("#reg_box p:eq(1)").text(AjaxObj.username);
-			}
-			if(AjaxObj.password){
-				$("#reg_box p:eq(2)").text(AjaxObj.password);
-			}
-			if(AjaxObj.valicode){
-				$("#reg_box p:eq(4)").text(AjaxObj.valicode);
+			if(xmlhttp.responseText.charAt(0)=="{"){
+				var AjaxObj=eval("("+xmlhttp.responseText+")");
+				if(AjaxObj.email){
+					$("#reg_box p:eq(0)").text(AjaxObj.email);
+				}
+				if(AjaxObj.username){
+					$("#reg_box p:eq(1)").text(AjaxObj.username);
+				}
+				if(AjaxObj.password){
+					$("#reg_box p:eq(2)").text(AjaxObj.password);
+				}
+				if(AjaxObj.valicode){
+					$("#reg_box p:eq(4)").text(AjaxObj.valicode);
+				}
 			}
 		}
 	});
