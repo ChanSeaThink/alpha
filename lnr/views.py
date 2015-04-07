@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from lnr.models import User
 
 import Image, ImageDraw, ImageFont, ImageFilter, random#PIL插件的文件
@@ -47,7 +47,8 @@ def regist(request):
     userobj.Time = nt
     userobj.LastLoginTime = nt
     userobj.save()
-    return HttpResponse('regist')
+    request.session['username']=username
+    return HttpResponseRedirect('index')
 
 
 def login(request):
@@ -80,7 +81,8 @@ def login(request):
         user_data.LastLoginTime = datetime.now()
         user_data.save()
         del request.session['CAPTCHA']
-        return HttpResponse('login')
+        request.session['username']=user_data.UserName
+        return HttpResponseRedirect('index')
 
 def getCAPTCHA(request):
     sh = sha1()
