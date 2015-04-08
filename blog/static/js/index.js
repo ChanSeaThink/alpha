@@ -69,6 +69,12 @@ window.onload=function(){
 		var src2=src.replace(/paperplane2/,"paperplane");
 		$("#list_top img:eq(2)").attr({"src":src2});
 	});
+	$("#list_top li:eq(2)").click(function(){
+		var form=document.createElement("form");
+		form.method="GET";
+		form.action="/logout";
+		form.sumbit();
+	});
 
 	//弹出框
 	$("#log").click(function(){
