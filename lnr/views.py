@@ -84,6 +84,10 @@ def login(request):
         request.session['username']=user_data.UserName
         return HttpResponseRedirect('index')
 
+def logout(request):
+    del request.session['username']
+    return HttpResponseRedirect('index')
+
 def getCAPTCHA(request):
     sh = sha1()
     sh.update(str(datetime.now()))

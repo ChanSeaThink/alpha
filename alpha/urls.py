@@ -9,5 +9,6 @@ urlpatterns = patterns('',
     url(r'^index$', 'blog.views.index'),
     url(r'^regist$', 'lnr.views.regist'),
     url(r'^login$', 'lnr.views.login'),
+    url(r'^logout$', 'lnr.views.logout'),
     url(r'^getCAPTCHA','lnr.views.getCAPTCHA'),
 )
