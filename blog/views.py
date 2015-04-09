@@ -10,4 +10,4 @@ def index(request):
         return render_to_response('index.html', {'logined':username})
     else:
         #print '---->2'
-        return render_to_response('index.html', {'logined':username})
+        return render_to_response('index.html', {'logined':username, 'username':username})
