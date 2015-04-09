@@ -48,7 +48,9 @@ def regist(request):
     userobj.LastLoginTime = nt
     userobj.save()
     request.session['username']=username
-    return HttpResponseRedirect('index')
+    jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+    #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+    return HttpResponse(jsonObject,content_type="application/json")
 
 
 def login(request):
@@ -71,8 +73,8 @@ def login(request):
     shpw = sha1()
     shpw.update(password + str(user_data.Time)[0:19])
     spw = shpw.hexdigest()
-    print spw
-    print user_data.UserPassword
+    #print spw
+    #print user_data.UserPassword
     if spw != user_data.UserPassword:
         jsonObject = json.dumps({'password':'密码错误请重新输入!'},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
@@ -82,7 +84,9 @@ def login(request):
         user_data.save()
         del request.session['CAPTCHA']
         request.session['username']=user_data.UserName
-        return HttpResponseRedirect('index')
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
 
 def logout(request):
     del request.session['username']
