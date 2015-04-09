@@ -16,24 +16,25 @@ ul
 	position:fixed;
 	width:100%;
 	padding:10px 0 20px 0;
-	text-indent:20px;
 	background-color:#6699ff;
 	z-index:1;
 	}
 #title_top
 	{
 	color:white;
+	text-indent:20px;
 	font-size:38px;
 	}
 #intro_top
 	{
 	float:left;
 	color:white;
+	text-indent:20px;
 	font-size:17px;
 	}
 #lr
 	{
-	margin:27px 20px 0 5px;
+	margin:27px 20px 0 25px;
 	float:right;
 	color:#ffffff;
 	font-size:18px;
@@ -55,9 +56,11 @@ ul
 #user
 	{
 	float:right;
-	width:80px;
 	margin:10px 40px -10px 20px;
 	}
+#user div{
+	float:right;
+}
 #user_face
 	{
 	width:60px;
@@ -68,17 +71,22 @@ ul
 	}
 #triangle
 	{
-	float:right;
 	margin-top:25px;
 	border-top:solid 10px white;
 	border-left:solid 6px transparent;
 	border-right:solid 6px transparent;
+	}
+#uname
+	{
+	margin:17px 10px 0 10px;
+	color:white;
 	}
 #list_top
 	{
 	display:none;
 	position:absolute;
 	right:5px;
+	top:80px;
 	width:160px;
 	}
 #user:hover #list_top

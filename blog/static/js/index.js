@@ -69,11 +69,14 @@ window.onload=function(){
 		var src2=src.replace(/paperplane2/,"paperplane");
 		$("#list_top img:eq(2)").attr({"src":src2});
 	});
+	$("#list_top li:eq(0)").click(function(){
+		window.open("/writting","_self");
+	});
 	$("#list_top li:eq(2)").click(function(){
 		var form=document.createElement("form");
-		form.method="GET";
+		form.method="get";
 		form.action="/logout";
-		form.sumbit();
+		form.submit();
 	});
 
 	//弹出框
@@ -226,11 +229,14 @@ window.onload=function(){
 				if(AjaxObj.email){
 					$("#log_box p:eq(0)").text(AjaxObj.email);
 				}
-				if(AjaxObj.password){
+				else if(AjaxObj.password){
 					$("#log_box p:eq(1)").text(AjaxObj.password);
 				}
-				if(AjaxObj.valicode){
+				else if(AjaxObj.valicode){
 					$("#log_box p:eq(3)").text(AjaxObj.valicode);
+				}
+				else if(AjaxObj.status=="success"){
+					window.open("/index","_self");
 				}
 			}
 		}
@@ -269,14 +275,17 @@ window.onload=function(){
 				if(AjaxObj.email){
 					$("#reg_box p:eq(0)").text(AjaxObj.email);
 				}
-				if(AjaxObj.username){
+				else if(AjaxObj.username){
 					$("#reg_box p:eq(1)").text(AjaxObj.username);
 				}
-				if(AjaxObj.password){
+				else if(AjaxObj.password){
 					$("#reg_box p:eq(2)").text(AjaxObj.password);
 				}
-				if(AjaxObj.valicode){
+				else if(AjaxObj.valicode){
 					$("#reg_box p:eq(4)").text(AjaxObj.valicode);
+				}
+				else if(AjaxObj.status=="success"){
+					window.open("/index","_self");
 				}
 			}
 		}
@@ -419,7 +428,7 @@ window.onload=function(){
 	//正文区点击
 	//标题
 	$(".title .summary").click(function(){
-		window.open("./article.html","_self");
+		window.open("./article","_self");
 	});
 	//图片滚动事件
 	var picbox=document.getElementsByClassName("pic_box");
