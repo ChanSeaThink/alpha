@@ -11,3 +11,6 @@ def index(request):
     else:
         #print '---->2'
         return render_to_response('index.html', {'logined':username, 'username':username})
+
+def writting(request):
+    return render_to_response('writting.html')

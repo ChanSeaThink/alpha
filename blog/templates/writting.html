@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>写作页</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+{% load staticfiles %}
+<link href="{% static "css/writting.css" %}" rel="stylesheet">
+<!--<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js" %}">
+</script>-->
+<script src="{% static "js/writting.js" %}">
+</script>
+<script src="{% static "js/jquery-1.11.2.js" %}"></script>
+</head>
+<body>
+	<div id="nav_top">
+		<div id="backwards">
+			<img src="{% static "img/article/backwards.png" %}">
+		</div>
+		<div id="user">
+			<div id="triangle"></div>
+			<div id="user_face"><img src=""></div>
+			<div id="list_top">
+				<ul>
+					<li>
+						<img src="{% static "img/settings.png" %}">
+						<p>写文章</p>
+					</li>
+					<li>
+						<img src="{% static "img/pen.png" %}">
+						<p>设置</p>
+					</li>
+					<li>
+						<img src="{% static "img/paperplane.png" %}">
+						<p>注销</p>
+						<div class="clear"></div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div>
+			<input id="search" placeholder="搜索">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div id="fill"></div>
+	<div id="title">
+   		<div id="formula_bar">
+			<ul>
+				<li class="nav2_right" id="article_pub">
+					<img src="{% static "img/writting/redo.png" %}">
+					<div>发布文章</div>
+				</li>
+				<li class="nav2_right" id="article_edit">
+					<img src="{% static "img/writting/pencil.png" %}">
+					<div>编辑</div>
+				</li>
+				<li class="nav2 nav2_left" id="first_nav2">
+					<img src="{% static "img/writting/image.png" %}">
+				</li>
+				<li class="nav2 nav2_left" id="style">
+					<img src="{% static "img/writting/T.png" %}">
+					<ul>
+						<li class="nav2">
+							<img src="{% static "img/writting/b.png" %}">
+						</li>
+						<li class="nav2">
+							<img src="{% static "img/writting/u.png" %}">
+						</li>
+						<li class="nav2">
+							<img src="{% static "img/writting/i.png" %}">
+						</li>
+					</ul>
+				</li>
+				<li class="nav2 nav2_left" id="align">
+					<img src="{% static "img/writting/pjustify.png" %}">
+					<ul>
+						<li class="nav2">
+							<img src="{% static "img/writting/pcenter.png" %}">
+						</li>
+						<li class="nav2">
+							<img src="{% static "img/writting/pleft.png" %}">
+						</li>
+						<li class="nav2">
+							<img src="{% static "img/writting/pright.png" %}">
+						</li>
+					</ul>
+				</li>
+				<p class="clear"></p>
+			</ul>
+		</div>
+	</div>
+	<div id="main2">
+		<div id="content2">
+			<div>
+				<textarea id="write_title" rows=1 maxlength="30"></textarea>
+				<div id="write_text" contenteditable><p contenteditable="false"> </p><p><br></p></div>
+			</div>
+		</div>
+	</div>
+	<div id="popup">
+		<div id="popup_bottom"></div>
+		<div id="popup_top">
+			<div id="pic_box">
+				<h2>插入图片</h2>
+				<div>
+					<p id="lctup"><b>本地上传</b></p>
+					<p>或</p>
+					<p id="itnup"><b>网络图片</b></p>
+					<div class="clear"></div>
+				</div>
+				<div id="lctpic">选择图片上传</div>
+				<input type="file" id="file" accept="image/*">
+				<div class="link" id="itnpic">
+					<img src="{% static "img/writting/link.png" %}">
+					<input type="text" placeholder="图片链接" />
+				</div>
+				<p class="c">
+					<span class="popup_cancel">取消</span>
+					<span class="popup_confirm">确认</span>
+				</p>
+				<p class="clear"></p>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	</script>
+</body>
+</html>
