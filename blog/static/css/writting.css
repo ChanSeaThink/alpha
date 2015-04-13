@@ -152,19 +152,19 @@
 		position:fixed;
 		top:80px;
 		width:100%;
-		background-color:#a1a1a1;
+		background-color:#cccccc;
 	}
 	#first_nav2{
 		margin-left:14px;
 	}
 	#formula_bar ul li:hover {
-		background-color:#414141;
+		background-color:#666666;
 	}
 	.nav2 {
 		width:45px;
 		height:45px;
 		padding:8px 8px 4px 8px;
-		background-color:#a1a1a1;
+		background-color:#cccccc;
 	}
 	.nav2_empty {
 		width:45px;
@@ -187,6 +187,9 @@
 	}
 	.nav2_left {
 		float:left;
+	}
+	#construction {
+		display:none;
 	}
 	#what_type {
 		display:none;
@@ -276,21 +279,22 @@
 	#content2 {
 		margin:0 auto;
 		width:600px;
-		border:1px solid;
+		border:1px solid #cccccc;
 	}
 	#content2>div {
 		background-color:#fefeeb;
 		overflow:hidden;
 	}
-	#content2>div>div {
+	#title_box {
+		width:600px;
+		padding:15px 0 10px 0;
+		border-bottom:1px solid #cccccc;
+	}
+	#text_box {
 		width:560px;
 		margin:0 auto;
 	}
-	#write_title {
-		width:560px;
-		background-color:#fefeeb;
-	}
-	#write_text {
+	#write_title,#write_text {
 		width:560px;
 		background-color:#fefeeb;
 	}
@@ -298,11 +302,10 @@
 		outline:none;
 	}
 	#write_title {
-		margin-top:25px;
-		padding:10px 20px 10px 20px;
+		margin-left:-1px;
+		padding:10px 21px;
 		font-size:34px;
 		border:none;
-		border-bottom:1px solid #a1a1a1;
 		white-space:nowrap;
 		overflow-x:hidden;
 	}
