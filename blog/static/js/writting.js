@@ -322,13 +322,15 @@ window.onload=function(){
 		var heightMark=300;
 		writetext.oninput=function(){
 			if(!($("#write_text").text())){
-				$("#write_text").append("<p contenteditable='false'> </p><p><br></p>");
+				//chrome,safari
+				$("#write_text").html("<p><br></p>");
 				setTimeout(function(){
-				var r=document.createRange();
-				r.setStart(writetext.childNodes[1].childNodes[0],0);
-				r.setEnd(writetext.childNodes[1].childNodes[0],0);
-				window.getSelection().removeAllRanges();
-				window.getSelection().addRange(r);
+					$("#write_title").focus();
+					var r=document.createRange();
+					r.setStart(writetext.childNodes[0].childNodes[0],0);
+					r.setEnd(writetext.childNodes[0].childNodes[0],0);
+					window.getSelection().removeAllRanges();
+					window.getSelection().addRange(r);
 				},1);
 			}
 			var h=document.body.scrollTop;
