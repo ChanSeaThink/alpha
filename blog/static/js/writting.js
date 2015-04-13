@@ -10,22 +10,34 @@ window.onload=function(){
 	});
 	//用户功能
 	$("#list_top li:eq(0)").mouseover(function(){
-		$("#list_top img:eq(0)").attr({"src":"./img/settings2.png"});
+		var src=$("#list_top img:eq(0)").attr("src");
+		var src2=src.replace(/settings/,"settings2");
+		$("#list_top img:eq(0)").attr({"src":src2});
 	});
 	$("#list_top li:eq(1)").mouseover(function(){
-		$("#list_top img:eq(1)").attr({"src":"./img/pen2.png"});
+		var src=$("#list_top img:eq(1)").attr("src");
+		var src2=src.replace(/pen/,"pen2");
+		$("#list_top img:eq(1)").attr({"src":src2});
 	});
 	$("#list_top li:eq(2)").mouseover(function(){
-		$("#list_top img:eq(2)").attr({"src":"./img/paperplane2.png"});
+		var src=$("#list_top img:eq(2)").attr("src");
+		var src2=src.replace(/paperplane/,"paperplane2");
+		$("#list_top img:eq(2)").attr({"src":src2});
 	});
 	$("#list_top li:eq(0)").mouseout(function(){
-		$("#list_top img:eq(0)").attr({"src":"./img/settings.png"});
+		var src=$("#list_top img:eq(0)").attr("src");
+		var src2=src.replace(/settings2/,"settings");
+		$("#list_top img:eq(0)").attr({"src":src2});
 	});
 	$("#list_top li:eq(1)").mouseout(function(){
-		$("#list_top img:eq(1)").attr({"src":"./img/pen.png"});
+		var src=$("#list_top img:eq(1)").attr("src");
+		var src2=src.replace(/pen2/,"pen");
+		$("#list_top img:eq(1)").attr({"src":src2});
 	});
 	$("#list_top li:eq(2)").mouseout(function(){
-		$("#list_top img:eq(2)").attr({"src":"./img/paperplane.png"});
+		var src=$("#list_top img:eq(2)").attr("src");
+		var src2=src.replace(/paperplane2/,"paperplane");
+		$("#list_top img:eq(2)").attr({"src":src2});
 	});
 	$("#list_top li:eq(2)").click(function(){
 		var form=document.createElement("form");
