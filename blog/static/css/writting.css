@@ -312,13 +312,12 @@
 		border:none;
 	}
 	#write_text>p{
-		border:1px solid;
+		border:none;
 		margin-bottom:1px;
 		word-break:break-all;
 	}
 	#write_text>div{
-		border:1px solid;
-		margin-bottom:1px;
+		border:none;
 	}
 	#write_text img{
 		max-width:500px;
@@ -431,5 +430,6 @@
 	}
 	#file
 		{
-		display:none;
+		position:absolute;
+		top:-9999px;
 		}
