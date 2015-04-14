@@ -52,9 +52,11 @@
 #user
 	{
 	float:right;
-	width:80px;
 	margin:0 40px -10px 20px;
 	}
+#user div{
+	float:right;
+}
 #user_face
 	{
 	width:60px;
@@ -65,11 +67,15 @@
 	}
 #triangle
 	{
-	float:right;
 	margin-top:25px;
 	border-top:solid 10px white;
 	border-left:solid 6px transparent;
 	border-right:solid 6px transparent;
+	}
+#uname
+	{
+	margin:17px 10px 0 10px;
+	color:white;
 	}
 #list_top
 	{
