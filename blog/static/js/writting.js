@@ -4,9 +4,7 @@ window.onload=function(){
 	//顶栏
 	//返回按钮
 	$("#backwards").click(function(){
-		if(window.history.back()){}
-		else 
-			window.open("./index.html","_self");
+		window.open("./index","_self");
 	});
 	//用户功能
 	$("#list_top li:eq(0)").mouseover(function(){
