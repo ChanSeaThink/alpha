@@ -18,3 +18,6 @@ def writting(request):
         return HttpResponseRedirect('/index')
     else:
         return render_to_response('writting.html', {'username':username})
+
+def saveWritting(request):
+    
