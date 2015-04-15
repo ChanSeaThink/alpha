@@ -325,8 +325,8 @@ window.onload=function(){
 				setTimeout(function(){
 					$("#write_title").focus();
 					var r=document.createRange();
-					r.setStart(writetext.childNodes[0].childNodes[0],0);
-					r.setEnd(writetext.childNodes[0].childNodes[0],0);
+					r.setStart(writetext.childNodes[0],0);
+					r.setEnd(writetext.childNodes[0],0);
 					window.getSelection().removeAllRanges();
 					window.getSelection().addRange(r);
 				},1);
