@@ -1,5 +1,5 @@
 from django.shortcuts import render_to_response
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 # Create your views here.
 def index(request):
@@ -13,4 +13,8 @@ def index(request):
         return render_to_response('index.html', {'logined':username, 'username':username})
 
 def writting(request):
-    return render_to_response('writting.html')
+    username = request.session.get('username', '')
+    if username == '':
+        return HttpResponseRedirect('/index')
+    else:
+        return render_to_response('writting.html', {'username':username})
