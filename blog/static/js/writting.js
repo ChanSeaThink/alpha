@@ -321,12 +321,12 @@ window.onload=function(){
 		writetext.oninput=function(){
 			if(!($("#write_text").text())){
 				//chrome,safari
-				$("#write_text").html("<p><br></p>");
+				$("#write_text").html("<p> </p><p><br></p>");
 				setTimeout(function(){
 					$("#write_title").focus();
 					var r=document.createRange();
-					r.setStart(writetext.childNodes[0],0);
-					r.setEnd(writetext.childNodes[0],0);
+					r.setStart(writetext.childNodes[1],0);
+					r.setEnd(writetext.childNodes[1],0);
 					window.getSelection().removeAllRanges();
 					window.getSelection().addRange(r);
 				},1);
