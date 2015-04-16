@@ -83,12 +83,14 @@ window.onload=function(){
 		var picform=document.getElementById("picform");
 		$("#file").change(function(){
 			if(/image/.test(file.files[0].type)){
+				var formdata=new FormData();
+				formdata.append("pic",file.files[0]);
 				$.ajax({
 					url:"/savePicture",
 					type:"POST",
-					contentType:"multipart/form-data",
-					data:{pic:file.files[0]},
+					contentType:false,
 					processData:false,
+					data:formdata,
 					success:function(data){
 						if(data.charAt(0)=="{"){
 							var url=eval("("+data+")");
@@ -99,8 +101,11 @@ window.onload=function(){
 							}
 						}
 						else{
-							alert("图片上传失败");
+							alert("图片返回失败");
 						}
+					}
+					error:function(){
+						alert("图片上传失败");
 					}
 				});
 			}
