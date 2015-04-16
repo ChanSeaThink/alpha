@@ -87,7 +87,7 @@ window.onload=function(){
 					url:"/saveWritting",
 					type:"POST",
 					contentType:"multipart/form-data",
-					data:{"pic",file.files[0]},
+					data:{"pic":file.files[0]},
 					success:function(data,status){
 						var url=eval("("+data+")");
 						if(url.pic){
