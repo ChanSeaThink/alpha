@@ -80,20 +80,23 @@ window.onload=function(){
 			$("#file").click();
 		});
 		var file=document.getElementById("file");
-		var form=document.getElementById("form");
+		var picform=document.getElementById("picform");
 		$("#file").change(function(){
 			if(/image/.test(file.files[0].type)){
 				$.ajax({
 					url:"/savePicture",
 					type:"POST",
 					contentType:"multipart/form-data",
-					data:{"pic":file.files[0]},
-					success:function(data,status){
-						var url=eval("("+data+")");
-						if(url.pic){
-							var img=document.createElement("img");
-							img.src=url.pic;
-							range.insertNode(img);
+					data:{pic:file.files[0]},
+					processData:false,
+					success:function(data){
+						if(data.charAt(0)=="{"){
+							var url=eval("("+data+")");
+							if(url.pic){
+								var img=document.createElement("img");
+								img.src=url.pic;
+								range.insertNode(img);
+							}
 						}
 						else{
 							alert("图片上传失败");
@@ -104,7 +107,7 @@ window.onload=function(){
 			else{
 				alert("请选择图片文件");
 			}
-        	form.reset();
+        	picform.reset();
 		});
 		$(".popup_confirm").click(function(){
 			for(var i=0;i<boxData.length;i++){
