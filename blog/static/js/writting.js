@@ -103,7 +103,7 @@ window.onload=function(){
 						else{
 							alert("图片返回失败");
 						}
-					}
+					},
 					error:function(){
 						alert("图片上传失败");
 					}
