@@ -1,5 +1,6 @@
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
+from blog.models import Passage, Comment, OriginalPicture, CompressedPicture, CachePicture
 
 # Create your views here.
 def index(request):
@@ -19,5 +20,7 @@ def writting(request):
     else:
         return render_to_response('writting.html', {'username':username})
 
-def saveWritting(request):
+def savePicture(request):
+    print request.FILES
+    return HttpResponseRedirect('/writting')
     

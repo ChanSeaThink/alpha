@@ -20,8 +20,6 @@ class Passage(models.Model):
     Time = models.DateTimeField()
     ShortContent = models.CharField(max_length = 400)
     LongContent = models.TextField()
-    OriginalPicture = models.TextField()
-    CompressedPicture = models.TextField()
 
 class Comment(models.Model):
     '''
@@ -37,3 +35,32 @@ class Comment(models.Model):
     Time = models.DateTimeField()
     Content = models.TextField()
 
+class OriginalPicture(models.Model):
+    '''
+    此类用于描述原图的数据库表。
+
+    ImagePath：保存图片的路径。
+    PassageID：文章的id，外键。
+    '''
+    ImagePath = models.ImageField(upload_to='pictures')
+    PassageID = models.ForeignKey(Passage)
+
+class CompressedPicture(models.Model):
+    '''
+    此类用于描述压缩图的数据库表。
+
+    ImagePath：保存图片的路径。
+    PassageID：文章的id，外键。
+    '''
+    ImagePath = models.ImageField(upload_to='compressedpictures')
+    PassageID = models.ForeignKey(Passage)
+
+class CachePicture(models.Model):
+    '''
+    此类用于描述原图缓存的数据库表。
+
+    ImagePath：保存图片的路径。
+    UserName：写作者的名字。
+    '''
+    ImagePath = models.ImageField(upload_to='pictures')
+    UserName = models.CharField(max_length = 30)
