@@ -83,33 +83,28 @@ window.onload=function(){
 		var form=document.getElementById("form");
 		$("#file").change(function(){
 			if(/image/.test(file.files[0].type)){
-				if(window.webkitURL){
-					var img=document.createElement("img");
-					img.src=window.webkitURL.createObjectURL(file.files[0]);
-					range.insertNode(img);
-				}
-				else if(window.URL){
-					var img=document.createElement("img");
-					img.src=window.URL.createObjectURL(file.files[0]);
-					range.insertNode(img);
-				}
-				else if(window.FileReader){
-					var reader=new FileReader();
-					reader.onload=function(){
-						var img=document.createElement("img");
-						img.src=this.result;
-        				range.insertNode(img);
+				$.ajax({
+					url:"/saveWritting",
+					type:"POST",
+					contentType:"multipart/form-data",
+					data:file.files[0],
+					success:function(data,status){
+						var url=eval("("+data+")");
+						if(url.pic){
+							var img=document.createElement("img");
+							img.src=url.pic;
+							range.insertNode(img);
+						}
+						else{
+							alert("图片上传失败");
+						}
 					}
-					reader.readAsDataURL(file.files[0]);
-				}
-				else{
-					alert("该浏览器无法插入图片");
-				}
-        		form.reset();
+				});
 			}
 			else{
 				alert("请选择图片文件");
 			}
+        	form.reset();
 		});
 		$(".popup_confirm").click(function(){
 			for(var i=0;i<boxData.length;i++){
@@ -138,11 +133,17 @@ window.onload=function(){
 		});
 
 		//设置文本样式
-		/*
 		$("#article_pub").click(function(){
-			alert($("#write_text").html());
+			var data=$("#write_text").html();
+			var textform=document.createElement("form");
+			textform.method="post";
+			textform.action="/saveWritting";
+			var textinput=document.createElement("input");
+			textinput.type="text";
+			textinput.value=data;
+			textform.appendChild(textinput);
+			textform.submit();
 		});
-		//*/
 		$("#style>img").click(function(){
 			range=window.getSelection().getRangeAt(0);
 			var rangestr=range.toString();
