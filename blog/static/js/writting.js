@@ -87,7 +87,7 @@ window.onload=function(){
 					url:"/saveWritting",
 					type:"POST",
 					contentType:"multipart/form-data",
-					data:file.files[0],
+					data:{"pic",file.files[0]},
 					success:function(data,status){
 						var url=eval("("+data+")");
 						if(url.pic){
@@ -140,6 +140,7 @@ window.onload=function(){
 			textform.action="/saveWritting";
 			var textinput=document.createElement("input");
 			textinput.type="text";
+			textinput.name="text";
 			textinput.value=data;
 			textform.appendChild(textinput);
 			textform.submit();
