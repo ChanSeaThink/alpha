@@ -84,7 +84,7 @@ window.onload=function(){
 		$("#file").change(function(){
 			if(/image/.test(file.files[0].type)){
 				$.ajax({
-					url:"/saveWritting",
+					url:"/savePicture",
 					type:"POST",
 					contentType:"multipart/form-data",
 					data:{"pic":file.files[0]},

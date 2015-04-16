@@ -21,6 +21,8 @@ def writting(request):
         return render_to_response('writting.html', {'username':username})
 
 def savePicture(request):
-    print request.FILES
-    return HttpResponseRedirect('/writting')
+    #print 'hello'
+    #print request.FILES
+    #return HttpResponseRedirect('/writting')
+    return HttpResponse('Get it')
     
