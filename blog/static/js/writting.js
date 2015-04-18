@@ -92,13 +92,10 @@ window.onload=function(){
 					processData:false,
 					data:formdata,
 					success:function(data){
-						if(data.charAt(0)=="{"){
-							var url=eval("("+data+")");
-							if(url.pic){
-								var img=document.createElement("img");
-								img.src=url.pic;
-								range.insertNode(img);
-							}
+						if(data.pic){
+							var img=document.createElement("img");
+							img.src=data.pic;
+							range.insertNode(img);
 						}
 						else{
 							alert("图片返回失败");
