@@ -139,14 +139,20 @@ window.onload=function(){
 
 		//设置文本样式
 		$("#article_pub").click(function(){
-			var data=$("#write_text").html();
+			var textdata=$("#write_text").html();
+			var titledata=$("#write_title").val();
 			var textform=document.createElement("form");
 			textform.method="post";
 			textform.action="/saveWritting";
 			var textinput=document.createElement("input");
+			var titleinput=document.createElement("input");
 			textinput.type="text";
 			textinput.name="text";
-			textinput.value=data;
+			textinput.value=textdata;
+			titleinput.type="text";
+			titleinput.name="title";
+			titleinput.value=titledata;
+			textform.appendChild(titleinput);
 			textform.appendChild(textinput);
 			textform.submit();
 		});
