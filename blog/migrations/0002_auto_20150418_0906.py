@@ -17,6 +17,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('ImagePath', models.ImageField(upload_to=b'pictures')),
                 ('UserName', models.CharField(max_length=30)),
+                ('ImageName', models.CharField(max_length=50)),
             ],
             options={
             },
@@ -27,6 +28,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('ImagePath', models.ImageField(upload_to=b'compressedpictures')),
+                ('ImageName', models.CharField(max_length=50)),
                 ('PassageID', models.ForeignKey(to='blog.Passage')),
             ],
             options={
@@ -38,6 +40,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('ImagePath', models.ImageField(upload_to=b'pictures')),
+                ('ImageName', models.CharField(max_length=50)),
                 ('PassageID', models.ForeignKey(to='blog.Passage')),
             ],
             options={

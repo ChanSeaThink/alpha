@@ -41,9 +41,11 @@ class OriginalPicture(models.Model):
 
     ImagePath：保存图片的路径。
     PassageID：文章的id，外键。
+    ImageName：图片名称。
     '''
     ImagePath = models.ImageField(upload_to='pictures')
     PassageID = models.ForeignKey(Passage)
+    ImageName = models.CharField(max_length= 50)
 
 class CompressedPicture(models.Model):
     '''
@@ -51,9 +53,11 @@ class CompressedPicture(models.Model):
 
     ImagePath：保存图片的路径。
     PassageID：文章的id，外键。
+    ImageName：图片名称。
     '''
     ImagePath = models.ImageField(upload_to='compressedpictures')
     PassageID = models.ForeignKey(Passage)
+    ImageName = models.CharField(max_length= 50)
 
 class CachePicture(models.Model):
     '''
@@ -61,6 +65,8 @@ class CachePicture(models.Model):
 
     ImagePath：保存图片的路径。
     UserName：写作者的名字。
+    ImageName：图片名称。
     '''
     ImagePath = models.ImageField(upload_to='pictures')
     UserName = models.CharField(max_length = 30)
+    ImageName = models.CharField(max_length= 50)
