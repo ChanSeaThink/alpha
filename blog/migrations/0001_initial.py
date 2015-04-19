@@ -12,6 +12,18 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='CachePicture',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('ImagePath', models.ImageField(upload_to=b'pictures')),
+                ('UserName', models.CharField(max_length=30)),
+                ('ImageName', models.CharField(max_length=50)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
             name='Comment',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
@@ -30,9 +42,21 @@ class Migration(migrations.Migration):
                 ('Time', models.DateTimeField()),
                 ('ShortContent', models.CharField(max_length=400)),
                 ('LongContent', models.TextField()),
-                ('OriginalPicture', models.TextField()),
-                ('CompressedPicture', models.TextField()),
                 ('UserID', models.ForeignKey(to='lnr.User')),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Picture',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('OriginalImagePath', models.ImageField(upload_to=b'pictures')),
+                ('OriginalImageName', models.CharField(max_length=50)),
+                ('CompressedImagePath', models.ImageField(upload_to=b'compressedpictures')),
+                ('CompressedImageName', models.CharField(max_length=50)),
+                ('PassageID', models.ForeignKey(to='blog.Passage')),
             ],
             options={
             },

@@ -35,29 +35,21 @@ class Comment(models.Model):
     Time = models.DateTimeField()
     Content = models.TextField()
 
-class OriginalPicture(models.Model):
+class Picture(models.Model):
     '''
-    此类用于描述原图的数据库表。
+    此类用于描述原图以及其对应的缩略图的数据库表。
 
-    ImagePath：保存图片的路径。
     PassageID：文章的id，外键。
-    ImageName：图片名称。
+    OriginalImagePath：保存原图片的路径。
+    OriginalImageName：原图片名称。
+    CompressedImagePath：保存缩略图片的路径。
+    CompressedImageName：缩略图片名称。
     '''
-    ImagePath = models.ImageField(upload_to='pictures')
     PassageID = models.ForeignKey(Passage)
-    ImageName = models.CharField(max_length= 50)
-
-class CompressedPicture(models.Model):
-    '''
-    此类用于描述压缩图的数据库表。
-
-    ImagePath：保存图片的路径。
-    PassageID：文章的id，外键。
-    ImageName：图片名称。
-    '''
-    ImagePath = models.ImageField(upload_to='compressedpictures')
-    PassageID = models.ForeignKey(Passage)
-    ImageName = models.CharField(max_length= 50)
+    OriginalImagePath = models.ImageField(upload_to='pictures')
+    OriginalImageName = models.CharField(max_length= 50)
+    CompressedImagePath = models.ImageField(upload_to='compressedpictures')
+    CompressedImageName = models.CharField(max_length= 50)
 
 class CachePicture(models.Model):
     '''

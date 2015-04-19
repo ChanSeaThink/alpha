@@ -1,10 +1,11 @@
 # -*- coding: utf8 -*-
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
-from blog.models import Passage, Comment, OriginalPicture, CompressedPicture, CachePicture
-import time, random
-import json
-
+from blog.models import Passage, Comment, Picture, CachePicture
+from lnr.models import User
+import time, random, json, re, Image, os
+from datetime import datetime
+from django.conf import settings
 # Create your views here.
 def index(request):
     username = request.session.get('username', '')
@@ -22,6 +23,69 @@ def writting(request):
         return HttpResponseRedirect('/index')
     else:
         return render_to_response('writting.html', {'username':username})
+
+def saveWritting(request):
+    #blog 应用中最重要的试图函数。
+    #包括以下主要功能：1，保存博文；2，生成缩略图；3，把缓存表的图片信息移到源图表，然后清空缓存表。
+    username = request.session.get('username', '')
+    if username == '':
+        return HttpResponseRedirect('/index')
+    title = request.POST['title']
+    text = request.POST['text']
+    textNoHtml = re.sub('<[^>]*?>','',text)
+    #print len(textNoHtml)
+    #print text
+    #print textNoHtml
+    if len(textNoHtml) < 120:
+        shortContent = textNoHtml + '......'
+    else:
+        shortContent = textNoHtml[0:120] + '......'
+    nt = datetime.now()
+    #以下是保存博文数据到数据表中。
+    passageObj = Passage()
+    writerObj = User.objects.get(UserName = username)
+    passageObj.UserID = writerObj
+    passageObj.Title = title
+    passageObj.Time = nt
+    passageObj.ShortContent = shortContent
+    passageObj.LongContent = text
+    passageObj.save()
+    #以下是把所有缓存表的图片去处移到源图表，并生成压缩图。
+    picSrcLs = re.findall('<img src="(.*?)">',text)
+    picNameLs = []
+    for pss in picSrcLs:
+        if pss[0:13]=='/showPicture/':
+            picNameLs.append(pss[13:])
+        else:
+            continue
+
+    for pn in picNameLs:
+        cpobj = CachePicture.objects.get(ImageName = pn)
+        #print 'sss',cpobj.ImagePath.name
+        im = Image.open(os.path.join(settings.MEDIA_ROOT, cpobj.ImagePath.name))
+        w, h = im.size
+        if w > h:
+            im.thumbnail((65, (65*h)//w))
+        else:
+            im.thumbnail(((w*75)//h, 72))
+        savepath = os.path.join(settings.MEDIA_ROOT, 'compressedpictures' ,'thumnail'+cpobj.ImageName)
+        fm = cpobj.ImageName.split('.')[1]
+        if fm.lower() == 'jpg':
+            fm = 'jpeg'
+        im.save(savepath, fm)
+        picObj = Picture()
+        picObj.PassageID = Passage.objects.get(UserID = writerObj, Time = nt)
+        picObj.OriginalImageName = pn
+        picObj.OriginalImagePath = cpobj.ImagePath
+        picObj.CompressedImageName = 'thumnail'+cpobj.ImageName
+        picObj.CompressedImagePath.name = os.path.join('compressedpictures' ,'thumnail'+cpobj.ImageName)
+        picObj.save()
+        cpobj.delete()
+    deleteCachePicLs = CachePicture.objects.filter(UserName = username)
+    for pic in deleteCachePicLs:
+        os.remove(os.path.join(settings.MEDIA_ROOT, pic.ImagePath.name))
+        pic.delete()
+    return HttpResponse('Get it')
 
 def savePicture(request):
     #print request.FILES
@@ -46,19 +110,34 @@ def savePicture(request):
         p.UserName = username
         p.ImageName = image.name
         p.save()
-        cachePictureObj = CachePicture.objects.get(ImageName = image.name)
+        #cachePictureObj = CachePicture.objects.get(ImageName = image.name)
         path = '/showPicture/' + image.name
         #print path
         #print cachePictureObj.id
-        jsonObject = json.dumps({'pic':'path'},ensure_ascii = False)
+        jsonObject = json.dumps({'pic':path},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
     else:
         return HttpResponse('图片上传错误。')
 
-def showPicture(request):
+def showPicture(request, ImgName):
     username = request.session.get('username', '')
     if username == '':
         return HttpResponseRedirect('/index')
-    print 'Get Pic'
-    return HttpResponse('Demo')
+    #print request.META['HTTP_REFERER']
+    #判断返回的图片类型
+    #picType = ImgName.split('.')[1]
+    if request.META.has_key('HTTP_REFERER') == False:
+        pictureObj = Picture.objects.get(OriginalImageName = ImgName)
+        return HttpResponse(pictureObj.OriginalImagePath, 'image')
+    else:
+        if '/writting' in request.META['HTTP_REFERER']:
+            cachePictureObj = CachePicture.objects.get(ImageName = ImgName)
+            #os.path.join(settings.MEDIA_ROOT, str(p.image))
+            #print cachePictureObj.id
+            #print cachePictureObj.ImagePath
+            #返回存在缓存里的图片
+            return HttpResponse(cachePictureObj.ImagePath, 'image')
+        else:
+            pictureObj = Picture.objects.get(OriginalImageName = ImgName)
+            return HttpResponse(pictureObj.OriginalImagePath, 'image')
