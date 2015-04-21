@@ -143,9 +143,9 @@ def savePicture(request):
         return HttpResponse('图片上传错误。')
 
 def showPicture(request, ImgName):
-    username = request.session.get('username', '')
+    '''username = request.session.get('username', '')
     if username == '':
-        return HttpResponseRedirect('/index')
+        return HttpResponseRedirect('/index')'''
     #print request.META['HTTP_REFERER']
     #判断返回的图片类型
     #picType = ImgName.split('.')[1]
