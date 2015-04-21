@@ -56,7 +56,27 @@
     <div id="main">
         <div class="fill"></div>
         <div id="content">
-            <div>
+            {% for piece in dic %}
+                <div>
+                    <h2 class="title">{{ piece.passage.Title }}</h2>
+                    <div class="pic_box">
+                    {% for Pic in piece.thumnailLs %}
+                        <img src="/showThumnail/{{ Pic.CompressedImageName }}" alt=1>
+                    {% endfor %}
+                    </div>
+                    <div class="summary">{{ piece.passage.ShortContent }}</div>
+                    <div class="read">
+                        <p>阅：</p>
+                        <p>{{ piece.passage.readTimes }}</p>
+                    </div>
+                    <div class="comments">
+                        <p>评：</p>
+                        <p>{{ piece.passage.commentTimes }}</p>
+                    </div>
+                    <div class="date">{{ piece.passage.Time }}</div>
+                </div>
+            {% endfor %}
+            <!--<div>
                 <h2 class="title">标题一</h2>
                 <div class="pic_box">
                     <img src="" alt=1>
@@ -223,7 +243,7 @@
                     <p>13</p>
                 </div>
                 <div class="date">2015-2-1 &nbsp;13: 40: 30</div>
-            </div>
+            </div>-->
         </div>
         <div class="fill"></div>
         <div class="clear"></div>

@@ -12,14 +12,17 @@ class Passage(models.Model):
     Time：文章创建时间。
     ShortContent：用于显示在首页的摘要。
     LongContent：文章主体。
-    OriginalPicture：原图的路径。
-    CompressedPicture：缩略图的路径。
     '''
     UserID = models.ForeignKey('lnr.User')
     Title = models.CharField(max_length = 200)
     Time = models.DateTimeField()
     ShortContent = models.CharField(max_length = 400)
     LongContent = models.TextField()
+    readTimes = models.IntegerField(default = 0)
+    commentTimes = models.IntegerField(default = 0)
+    
+    class Meta:
+        ordering = ['-Time']
 
 class Comment(models.Model):
     '''

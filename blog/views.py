@@ -1,5 +1,5 @@
 # -*- coding: utf8 -*-
-from django.shortcuts import render_to_response
+from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from blog.models import Passage, Comment, Picture, CachePicture
 from lnr.models import User
@@ -10,12 +10,24 @@ from django.conf import settings
 def index(request):
     username = request.session.get('username', '')
     #print '(',username,')'
+    passageLs = Passage.objects.all()[0:8]
+    #for pl in passageLs:
+    #    print pl.Time
+    indexDic = []
+    for passage in passageLs:
+        thumnailLs = Picture.objects.filter(PassageID = passage)
+        indexDic.append({'passage':passage, 'thumnailLs':thumnailLs})
+
+    for ss in indexDic:
+        print ss
+
     if username == '':
         #print '---->1'
-        return render_to_response('index.html', {'logined':username})
+        return render_to_response('index.html', {'logined':username, 'dic':indexDic})
     else:
         #print '---->2'
-        return render_to_response('index.html', {'logined':username, 'username':username})
+        return render_to_response('index.html', {'logined':username, 'username':username, 'dic':indexDic})
+
 
 def writting(request):
     username = request.session.get('username', '')
@@ -65,9 +77,9 @@ def saveWritting(request):
         im = Image.open(os.path.join(settings.MEDIA_ROOT, cpobj.ImagePath.name))
         w, h = im.size
         if w > h:
-            im.thumbnail((65, (65*h)//w))
+            im.thumbnail((66, (66*h)//w))
         else:
-            im.thumbnail(((w*75)//h, 72))
+            im.thumbnail(((w*74)//h, 74))
         savepath = os.path.join(settings.MEDIA_ROOT, 'compressedpictures' ,'thumnail'+cpobj.ImageName)
         fm = cpobj.ImageName.split('.')[1]
         if fm.lower() == 'jpg':
@@ -141,3 +153,14 @@ def showPicture(request, ImgName):
         else:
             pictureObj = Picture.objects.get(OriginalImageName = ImgName)
             return HttpResponse(pictureObj.OriginalImagePath, 'image')
+
+def showThumnail(request, ImgName):
+    thumnailObj = Picture.objects.get(CompressedImageName = ImgName)
+    return HttpResponse(thumnailObj.CompressedImagePath, 'image')
+
+
+
+
+
+
+
