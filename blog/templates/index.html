@@ -58,8 +58,8 @@
         <div id="content">
             {% for piece in dic %}
                 <div>
-                    <h2 class="title">{{ piece.passage.Title }}</h2>
-                    <div class="pic_box">
+                    <h2 class="title" data-url="">{{ piece.passage.Title }}</h2>
+                    <div class="pic_box" data-url="">
                     {% for Pic in piece.thumnailLs %}
                         <img src="/showThumnail/{{ Pic.CompressedImageName }}" alt=1>
                     {% endfor %}

@@ -442,8 +442,8 @@ window.onload=function(){
 
 	//正文区点击
 	//标题
-	$(".title .summary").click(function(){
-		window.open("./article","_self");
+	$(".title,.summary").click(function(){
+		window.open($(this).attr("data-url"),"_self");
 	});
 	//图片滚动事件
 	var w=parseInt($(".pic_box img:first").css("width"))+10;
