@@ -28,6 +28,16 @@ def index(request):
         #print '---->2'
         return render_to_response('index.html', {'logined':username, 'username':username, 'dic':indexDic})
 
+def passage(request, ID):
+    username = request.session.get('username', '')
+    passage = Passage.objects.get(id = int(ID))
+
+    if username == '':
+        #print '---->1'
+        return render_to_response('article.html', {'logined':username, 'passage':passage})
+    else:
+        #print '---->2'
+        return render_to_response('article.html', {'logined':username, 'username':username, 'passage':passage})
 
 def writting(request):
     username = request.session.get('username', '')

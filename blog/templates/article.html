@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>博文页</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+{% load staticfiles %}
+<link href="{% static "css/article.css" %}" rel="stylesheet">
+<link href="{% static "img/favicon.png" %}" %}" type="image/x-icon" rel="icon">
+<!--<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js" %}"></script>-->
+<script src="{% static "js/jquery-1.11.2.js" %}"></script>
+<script src="{% static "js/article.js" %}">
+</script>
+</head>
+<body>
+	<div id="nav_top">
+		<div id="backwards">
+			<img src="{% static "img/article/backwards.png" %}">
+		</div>
+        {% if logined %}
+		<div id="user">
+			<div id="triangle"></div>
+			<div id="uname">{{ username }}</div>
+			<div id="user_face"><img src=""></div>
+			<div id="list_top">
+				<ul>
+					<li>
+						<img src="{% static "img/settings.png" %}">
+						<p>编辑</p>
+					</li>
+					<li>
+						<img src="{% static "img/pen.png" %}">
+						<p>设置</p>
+					</li>
+					<li>
+						<img src="{% static "img/paperplane.png" %}">
+						<p>注销</p>
+						<div class="clear"></div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		{% else %}
+		<div id="lr">
+			<div id="log">登录</div>
+			<span>/</span>
+			<div id="reg">注册</div>
+		</div>
+		{% endif %}
+		<div>
+			<input id="search" placeholder="搜索">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div id="fill"></div>
+	<div id="main">
+		<div class="fill"></div>
+		<div id="content">
+			<div id="article">
+				<h1>{{passage.Title}}</h1>
+				<p id="article_data">{{passage.Time}}&emsp;{{passage.readTimes}}次阅读</p>
+				<div id="text">
+					{{passage.LongContent | safe}}
+				</div>
+			</div>
+			<div id="comment" contenteditable><p> </p><p><br></p></div>
+			<div id="edit">
+				<div id="send_message">发表评论</div>
+				<div id="face">
+					<img src="{% static "img/article/smiley.png" %}" />
+					<div>
+						<div id="expression">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+							<img src="{% static "img/article/face1.png" %}">
+						</div>
+					</div>
+				</div>
+				<div class="input_box">
+					<img src="{% static "img/article/mail.png" %}" />
+					<input type="text" placeholder="请输入邮箱" />
+				</div>
+				<div class="input_box" id="email_box">
+					<img src="{% static "img/article/lock.png" %}" />
+					<input type="text" placeholder="请输入密码" />
+				</div>
+				<p class="clear"></p>
+			</div>
+			<div id="comments_area">
+				<div>
+					<img src="">
+					<p id="username">多啦A梦</p>
+					<p id="time">2015.03.12&nbsp;&nbsp;21:10</p>
+					<div><p>苹果和微软不过如此…楼猪有了开源安卓这世界才怎么疯狂…这就是力量，苹果硬件跟不上咯</p></div>
+					<p class="clear"></p>
+				</div>
+				<div>
+					<img src="">
+					<p id="username">多啦A梦</p>
+					<p id="time">2015.03.12&nbsp;&nbsp;21:10</p>
+					<div>苹果和微软不过如此…楼猪有了开源安卓这世界才怎么疯狂…这就是力量，苹果硬件跟不上咯</div>
+					<p class="clear"></p>
+				</div>
+				<div>
+					<img src="">
+					<p id="username">多啦A梦</p>
+					<p id="time">2015.03.12&nbsp;&nbsp;21:10</p>
+					<div>苹果和微软不过如此…楼猪有了开源安卓这世界才怎么疯狂…这就是力量，苹果硬件跟不上咯</div>
+					<p class="clear"></p>
+				</div>
+			</div>
+			<div id="page">
+			</div>
+		</div>
+		<div class="fill"></div>
+	</div>
+	<div id="popup">
+		<div id="popup_bottom"></div>
+		<div id="popup_top">
+			<div id="lr_box">
+				<div id="close">×</div>
+				<div id="lr_title">
+					<div id="login">登录</div>
+					<div id="regis">注册</div>
+					<p class="clear"></p>
+				</div>
+				<form id="log_box">
+					<div id="email" class="account">
+						<img src="{% static "img/mail.png" %}">
+						<input type="text"  maxlength="30" placeholder="邮箱">
+						<p></p>
+					</div>
+					<div id="password" class="account">
+						<img src="{% static "img/lock.png" %}">
+						<input type="password" maxlength="16" placeholder="密码">
+						<p></p>
+					</div>
+					<div class="code_check">
+						<img src="">
+						<p>看不清楚？换一张</p>
+						<div>
+							<input type="text"  maxlength="4" placeholder="验证码">
+							<p></p>
+						</div>
+					</div>
+				</form>
+				<form id="reg_box">
+					<div class="account">
+						<img src="{% static "img/mail.png" %}">
+						<input type="text"  maxlength="30" placeholder="账户">
+						<p></p>
+					</div>
+					<div class="account">
+						<img src="{% static "img/t-shirt.png" %}">
+						<input type="text"  maxlength="8" placeholder="昵称">
+						<p></p>
+					</div>
+					<div class="account">
+						<img src="{% static "img/lock.png" %}">
+						<input type="password"  maxlength="16" placeholder="密码">
+						<p></p>
+					</div>
+					<div class="code_check">
+						<img src="">
+						<p>看不清楚？换一张</p>
+						<div>
+							<input type="text"  maxlength="4" placeholder="验证码">
+							<p></p>
+						</div>
+					</div>
+				</form>
+				<div id="log_button">登录</div>
+				<div id="reg_button">注册</div>
+			</div>
+			<div id="origin_pic">
+				<img src="">
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript"></script>
+</body>
+</html>
