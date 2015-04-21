@@ -1,10 +1,12 @@
 window.onload=function(){
 	var base=$(document).width();
 	$(".fill").css("width",(base-780)/2+"px");
+	$("#origin_pic img").css({"max-width":$(window).width()+"px","max-height":$(window).height()+"px"});
 
 	$(window).resize(function(){
 		base=$(document).width();
 		$(".fill").css("width",(base-780)/2+"px");
+		$("#origin_pic img").css({"max-width":$(window).width()+"px","max-height":$(window).height()+"px"});
 	});
 
 	var scrollFlag=0;
@@ -147,13 +149,26 @@ window.onload=function(){
 		$(".code_check:eq(1) img").attr({"src":"/getCAPTCHA/?nocache="+Math.random()});
 	});
 	$("#close,#popup_bottom").click(function(){
-		$("#popup,#lr_box,#log_box,#reg_box,#log_button,#reg_button,#origin_pic").hide();
+		$("#popup,#lr_box,#log_box,#reg_box,#log_button,#reg_button,#origin_pic,#origin_pic img").hide();
 	});
 	$(".pic_box img").click(function(){
 		$("#popup,#origin_pic").show();
-		$("#origin_pic img").attr(src);
-		var h=parseInt($("#origin_pic").css("height"));
-		$("#origin_pic").css({top:"50%",marginTop:-h/2+"px"});
+		var s=$(this).attr("src").replace(/Thumnail/,"Picture").replace(/thumnail/,"");
+		if($("#origin_pic img").attr("src")==s){
+			var pich=parseInt($("#origin_pic img").css("height"));
+			var picw=parseInt($("#origin_pic img").css("width"));
+			$("#origin_pic").css({marginTop:-pich/2+"px",marginLeft:-picw/2+"px"});
+			setTimeout(function(){$("#origin_pic img").show();},100);
+		}
+		else{
+			$("#origin_pic img").attr({"src":s});
+		}
+		$("#origin_pic img").load(function(){
+			var pich=parseInt($("#origin_pic img").css("height"));
+			var picw=parseInt($("#origin_pic img").css("width"));
+			$("#origin_pic").css({marginTop:-pich/2+"px",marginLeft:-picw/2+"px"});
+			setTimeout(function(){$("#origin_pic img").show();},100);
+		});
 	});
 	//submit时判断框内数据是否符合要求
 	$("#log_box").submit(function(e){
@@ -431,22 +446,120 @@ window.onload=function(){
 		window.open("./article","_self");
 	});
 	//图片滚动事件
+	var w=parseInt($(".pic_box img:first").css("width"))+10;
+	if(window.navigator.userAgent.indexOf("Firefox")<0){
+		for(var i=0;i<$(".pic_box").length;i++){
+			for(var j=3;j<$(".pic_box:eq("+i+") img").length;j++){
+				var image=$(".pic_box:eq("+i+") img:eq("+j+")");
+				image.css("z-index",-j);
+				if(j>3)
+					image.css("left",-w*(j-3)/2);
+				image.css("-webkit-transform","rotateY(-60deg)");
+				image.css("transform","rotateY(-60deg)")
+			}
+		}
+	}
 	var picbox=document.getElementsByClassName("pic_box");
-	var num=0,t;
+	var n=0;
 	function picSlide(e){
 		e=e||window.event;
 		e.preventDefault();
-		var d=e.wheelDelta?e.wheelDelta:e.detail;
-    	var len=$("img",this).length;
-    	var w=parseInt($("img",this).css("width"))+9;
-    	var n=0;
-    	if(d>0)n=1;
-    	else n=-1;
-    	$("img",this).stop(true,true);
-    	var left=parseInt($("img:first",this).css("left"));
-    	if((left>w-1&&n>0)||(left<-w*(len-2)+1&&n<0))
-    		return;
-    	$("img",this).animate({left:"+="+n*w+"px"},"fast");
+		if(e.wheelDelta){
+			if(e.wheelDelta>0)n=1;
+			else n=-1;
+			$("img",this).stop(true,true);
+			var left1=$("img:first",this).offset().left-$(this).offset().left;
+			var left2=$("img:last",this).offset().left-$(this).offset().left;
+			var left=123;
+			if((left1>w/2&&n>0)||(left2<3*w&&n<0))
+				return;
+			var pb=this;
+			pb.onmousewheel=function(e){e.preventDefault()};
+			setTimeout(function(){
+				pb.onmousewheel=picSlide;
+			},100);
+			var len=$("img",this).length;
+			var t=0,img,l,count=100;
+			for(var i=0;i<len;i++){
+				img=$("img:eq("+i+")",this);
+				l=img.offset().left-$(this).offset().left;
+				t=l+w*n;
+				if(n<0){
+					if(l>30&&t<30){
+						if(img.css("-webkit-aniamtion-name")!="rotate"||img.css("aniamtion-name")!="rotate"){
+							img.css("-webkit-animation","rotate .3s linear 0 1 forwards");
+							img.css("animation","rotate .3s linear 0 1 forwards");
+							img.css("z-index",i);
+						}
+						else{
+							img.css("-webkit-transform","rotateY(60deg)");
+							img.css("transform","rotateY(60deg)");
+						}
+						img.animate({left:"+="+w*n+"px"},500);
+					}
+					else if(l>230&&t<230){
+						if(img.css("-webkit-aniamtion-name")!="rotate3"||img.css("aniamtion-name")!="rotate3"){
+							img.css("-webkit-animation","rotate3 .3s linear 0 1 forwards");
+							img.css("animation","rotate3 .3s linear 0 1 forwards");
+							count=i;
+						}
+						else{
+							img.css("-webkit-transform","rotateY(0deg)");
+							img.css("transform","rotateY(0deg)");
+						}
+						img.animate({left:"+="+w*n+"px"},500);
+					}
+					else{
+						if(img.css("-webkit-animation-name")=="rotate"||img.css("animation-name")=="rotate"||count<i){
+							img.animate({left:"+="+w*n/2+"px"},"500");
+						}
+						else{
+							img.animate({left:"+="+w*n+"px"},"500");
+						}
+					}
+				}
+				else{
+					if(img.css("-webkit-animation-name")=="rotate"||img.css("animation-name")=="rotate"){
+						if(l<30&&t>30){
+							img.css("-webkit-animation","rotate2 .3s linear 0 1 forwards");
+							img.css("animation","rotate2 .3s linear 0 1 forwards");
+							img.animate({left:"+="+w*n+"px"},"500");
+						}else
+							img.animate({left:"+="+w*n/2+"px"},"500");
+					}
+					else if(l<230&&t>230){
+						if(img.css("-webkit-aniamtion-name")!="rotate4"||img.css("aniamtion-name")!="rotate4"){
+							img.css("-webkit-animation","rotate4 .3s linear 0 1 forwards");
+							img.css("animation","rotate4 .3s linear 0 1 forwards");
+							img.css("z-index",-i);
+							count=i;
+						}
+						else{
+							img.css("-webkit-transform","rotateY(-60deg)");
+							img.css("transform","rotateY(-60deg)");
+						}
+						img.animate({left:"+="+w*n+"px"},500);
+					}
+					else if(count<i){
+						img.animate({left:"+="+w*n/2+"px"},"500");
+					}
+					else{
+						img.animate({left:"+="+w*n+"px"},"500");
+					}
+				}
+			}
+		}
+		else if(e.detail){
+			if(e.detail>0)n=-1;
+			else n=1;
+			$("img",this).stop(true,true);
+			var left1=$("img:first",this).offset().left;
+			var left2=$("img:last",this).offset().left;
+			var left=123;
+			if((left1>w-1&&n>0)||(left2<3*w+1&&n<0))
+				return;
+			$("img",this).animate({"left":"+="+w*n+"px"});
+		}
     }
     for(var i=0;i<picbox.length;i++){
 		picbox[i].onmousewheel=picSlide;

@@ -177,14 +177,25 @@ ul
 	color:#6699ff;
 	cursor:pointer;
 	}
+.left_box
+	{
+	float:left;
+	width:450px;
+	}
+.bottom_box
+	{
+	clear:both;
+	}
 .pic_box
 	{
 	float:right;
 	margin-left:20px;
-	width:300px;
+	padding-left:38px;
+	width:262px;
 	height:85px;
 	overflow-x:hidden;
 	white-space: nowrap;
+	-webkit-perspective:500;
 	}
 .pic_box img
 	{
@@ -193,6 +204,38 @@ ul
 	width:65px;
 	height:74px;
 	cursor:pointer;
+	}
+	@-webkit-keyframes rotate {
+		from {-webkit-transform:rotateY(0deg)}
+		to {-webkit-transform:rotateY(60deg)}
+	}
+	@keyframes rotate {
+		from {-webkit-transform:rotateY(0deg)}
+		to {-webkit-transform:rotateY(60deg)}
+	}
+	@-webkit-keyframes rotate2 {
+		from {-webkit-transform:rotateY(60deg)}
+		to {-webkit-transform:rotateY(0deg)}
+	}
+	@keyframes rotate2 {
+		from {-webkit-transform:rotateY(60deg)}
+		to {-webkit-transform:rotateY(0deg)}
+	}
+	@-webkit-keyframes rotate3 {
+		from {-webkit-transform:rotateY(-60deg)}
+		to {-webkit-transform:rotateY(0deg)}
+	}
+	@keyframes rotate3 {
+		from {-webkit-transform:rotateY(-60deg)}
+		to {-webkit-transform:rotateY(0deg)}
+	}
+	@-webkit-keyframes rotate4 {
+		from {-webkit-transform:rotateY(0deg)}
+		to {-webkit-transform:rotateY(-60deg)}
+	}
+	@keyframes rotate4 {
+		from {-webkit-transform:rotateY(0deg)}
+		to {-webkit-transform:rotateY(-60deg)}
 	}
 .summary
 	{
@@ -203,7 +246,7 @@ ul
 	}
 .date
 	{
-	padding:2px 0 0 0;
+	padding:0px 0 0 0;
 	font-size:14px;
 	}
 .comments
@@ -223,6 +266,7 @@ ul
 .read
 	{
 	margin-left:50px;
+	margin-right:5px;
 	float:right;
 	}
 .read p
@@ -450,4 +494,11 @@ ul
 	{
 	display:none;
 	position:fixed;
+	top:50%;
+	left:50%;
+	z-index:10;
+	}
+#origin_pic img
+	{
+	display:none;
 	}
