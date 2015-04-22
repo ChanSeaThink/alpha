@@ -23,16 +23,16 @@
             <div id="list_top">
                 <ul>
                     {% if writePermission %}
-                    <li>
-                        <img src="{% static "img/settings.png" %}">
+                    <li id="list_writting">
+                        <img src="{% static "img/pen.png" %}">
                         <p>写文章</p>
                     </li>
                     {% endif %}
-                    <li>
-                        <img src="{% static "img/pen.png" %}">
+                    <li id="list_setting">
+                        <img src="{% static "img/settings.png" %}">
                         <p>设置</p>
                     </li>
-                    <li>
+                    <li id="list_logout">
                         <img src="{% static "img/paperplane.png" %}">
                         <p>注销</p>
                         <div class="clear"></div>

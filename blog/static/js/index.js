@@ -46,40 +46,40 @@ window.onload=function(){
 	});
 
 	//顶栏
-	$("#list_top li:eq(0)").mouseover(function(){
-		var src=$("#list_top img:eq(0)").attr("src");
-		var src2=src.replace(/settings/,"settings2");
-		$("#list_top img:eq(0)").attr({"src":src2});
-	});
-	$("#list_top li:eq(1)").mouseover(function(){
-		var src=$("#list_top img:eq(1)").attr("src");
+	$("#list_writting").mouseover(function(){
+		var src=$("#list_writting img").attr("src");
 		var src2=src.replace(/pen/,"pen2");
-		$("#list_top img:eq(1)").attr({"src":src2});
+		$("#list_writting img:eq(0)").attr({"src":src2});
 	});
-	$("#list_top li:eq(2)").mouseover(function(){
-		var src=$("#list_top img:eq(2)").attr("src");
+	$("#list_setting").mouseover(function(){
+		var src=$("#list_setting img").attr("src");
+		var src2=src.replace(/settings/,"settings2");
+		$("#list_setting img").attr({"src":src2});
+	});
+	$("#list_logout").mouseover(function(){
+		var src=$("#list_logout img").attr("src");
 		var src2=src.replace(/paperplane/,"paperplane2");
-		$("#list_top img:eq(2)").attr({"src":src2});
+		$("#list_logout img").attr({"src":src2});
 	});
-	$("#list_top li:eq(0)").mouseout(function(){
-		var src=$("#list_top img:eq(0)").attr("src");
-		var src2=src.replace(/settings2/,"settings");
-		$("#list_top img:eq(0)").attr({"src":src2});
-	});
-	$("#list_top li:eq(1)").mouseout(function(){
-		var src=$("#list_top img:eq(1)").attr("src");
+	$("#list_writting").mouseout(function(){
+		var src=$("#list_writting img").attr("src");
 		var src2=src.replace(/pen2/,"pen");
-		$("#list_top img:eq(1)").attr({"src":src2});
+		$("#list_writting img").attr({"src":src2});
 	});
-	$("#list_top li:eq(2)").mouseout(function(){
-		var src=$("#list_top img:eq(2)").attr("src");
+	$("#list_setting").mouseout(function(){
+		var src=$("#list_setting img").attr("src");
+		var src2=src.replace(/settings2/,"settings");
+		$("#list_setting img").attr({"src":src2});
+	});
+	$("#list_logout").mouseout(function(){
+		var src=$("#list_logout img").attr("src");
 		var src2=src.replace(/paperplane2/,"paperplane");
-		$("#list_top img:eq(2)").attr({"src":src2});
+		$("#list_logout img").attr({"src":src2});
 	});
-	$("#list_top li:eq(0)").click(function(){
+	$("#list_writting").click(function(){
 		window.open("/writting","_self");
 	});
-	$("#list_top li:eq(2)").click(function(){
+	$("#list_logout").click(function(){
 		var form=document.createElement("form");
 		form.method="get";
 		form.action="/logout";
