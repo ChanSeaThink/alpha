@@ -207,14 +207,9 @@ textarea
 	{
 	cursor:pointer;
 	}
-.intro
+#article img
 	{
-	margin-top:5px;
-	}
-.else
-	{
-	width:600px;
-	margin-top:8px;
+	max-width:600px;
 	}
 #date
 	{

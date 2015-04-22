@@ -59,13 +59,13 @@
             {% for piece in dic %}
                 <div>
                     <h2 class="title" data-url="/passage/{{ piece.passage.id }}">{{ piece.passage.Title }}</h2>
-                    <div class="pic_box" data-url="/passage/{{ piece.passage.id }}">
+                    <div class="pic_box">
                     {% for Pic in piece.thumnailLs %}
                         <img src="/showThumnail/{{ Pic.CompressedImageName }}" alt=1>
                     {% endfor %}
                     </div>
                     <div class="left_box">
-                    	<div class="summary">{{ piece.passage.ShortContent }}</div>
+                    	<div class="summary" data-url="/passage/{{ piece.passage.id }}">{{ piece.passage.ShortContent }}</div>
                     </div>
                     <div class="bottom_box">
                     	<div class="read">

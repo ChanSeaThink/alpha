@@ -139,6 +139,14 @@ window.onload=function(){
 
 		//设置文本样式
 		$("#article_pub").click(function(){
+			if($("#write_text").text().replace(/\s/g,"").length<=50){
+				alert("正文字数不低于50字");
+				return;
+			}
+			if($("#write_title").val().replace(/\s/g,"").length==0){
+				alert("标题为空");
+				return;
+			}
 			var textdata=$("#write_text").html();
 			var titledata=$("#write_title").val();
 			var textform=document.createElement("form");
@@ -151,7 +159,7 @@ window.onload=function(){
 			textinput.value=textdata;
 			titleinput.type="text";
 			titleinput.name="title";
-			titleinput.value=titledata;
+			titleinput.value=titledata.replace(/\s/g,"");
 			textform.appendChild(titleinput);
 			textform.appendChild(textinput);
 			textform.submit();
