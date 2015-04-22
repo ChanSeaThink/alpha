@@ -10,7 +10,7 @@ window.onload=function(){
 	$("#list_writting").mouseover(function(){
 		var src=$("#list_writting img").attr("src");
 		var src2=src.replace(/pen/,"pen2");
-		$("#list_writting img:eq(0)").attr({"src":src2});
+		$("#list_writting img").attr({"src":src2});
 	});
 	$("#list_setting").mouseover(function(){
 		var src=$("#list_setting img").attr("src");
