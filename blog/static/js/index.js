@@ -7,6 +7,11 @@ window.onload=function(){
 		base=$(document).width();
 		$(".fill").css("width",(base-780)/2+"px");
 		$("#origin_pic img").css({"max-width":$(window).width()+"px","max-height":$(window).height()+"px"});
+		if($("#origin_pic").css("display")!="none"){
+			var pich=parseInt($("#origin_pic img").css("height"));
+			var picw=parseInt($("#origin_pic img").css("width"));
+			$("#origin_pic").css({marginTop:-pich/2+"px",marginLeft:-picw/2+"px"});
+		}
 	});
 
 	var scrollFlag=0;
