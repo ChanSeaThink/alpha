@@ -11,8 +11,8 @@ class User(models.Model):
     UserName：用户的昵称。
     UserPassword：用户密码的哈西值。
     UserPermission：用户权限，
-                    0:仅有阅读权限
-                    1:有评论权限
+                    0:仅有阅读权限。
+                    1:有评论权限。
                     2:有发表权限。
     Time：用户账号创建时间。
     LastLoginTime：用户最近一次登录时间。
