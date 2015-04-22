@@ -477,7 +477,40 @@ window.onload=function(){
 	//send message
 	//*
 	$("#send_message").click(function(){
-		alert($("#comment").html());
+		var words=$("#comment").text().replace(/\s/g,"").length;
+		if(words==0||words>500){
+			alert("字数需在500以内");
+			return;
+		}
+		var email=$(".input_box:eq(0) input").val();
+		if(!pattern2.test(email)){
+			alert("邮箱格式有误");
+			return;
+		}
+		var password=$(".input_box:eq(1) input").val();
+		if(password.replace(/\s/g,"").length==0){
+			alert("密码为空");
+			return;
+		}
+		var commentText=document.createElement("input");
+		commentText.name="commentText";
+		commentText.type="text";
+		commentText.value=$("#comment").html();
+		var commentEmail=document.createElement("input");
+		commentEmail.name="commentEmail";
+		commentEmail.type="text";
+		commentEmail.value=email;
+		var commentPassword=document.createElement("input");
+		commentPassword.name="commentPassword";
+		commentPassword.type="text";
+		commentPassword.value=password;
+		var commentForm=document.createElement("form");
+		commentForm.action="/saveComment";
+		commentForm.method="GET";
+		commentForm.appendChild(commentText);
+		commentForm.appendChild(commentEmail);
+		commentForm.appendChild(commentPassword);
+		commentForm.submit();
 	});
 	//*/
 

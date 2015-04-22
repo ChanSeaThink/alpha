@@ -324,10 +324,12 @@ textarea
 	{
 	cursor:pointer;
 	}
+/*
 #face:hover div
 	{
 	display:block;
 	}
+*/
 #face>div>div>img
 	{
 	float:left;
