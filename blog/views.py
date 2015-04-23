@@ -52,7 +52,9 @@ def writting(request):
         return render_to_response('writting.html', {'username':username})
 
 def change(request, ID):
-    return render_to_response('change.html')
+    username = request.session.get('username', '')
+    passageObj = Passage.objects.get(id = int(ID))
+    return render_to_response('change.html', {'username':username, 'passage':passageObj})
 
 def saveWritting(request):
     #blog 应用中最重要的试图函数。
