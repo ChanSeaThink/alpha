@@ -41,10 +41,6 @@ window.onload=function(){
 		$("#list_logout img").attr({"src":src2});
 	});
 	$("#list_edit").click(function(){
-		var pasid=document.createElement("input");
-		pasid.type="text";
-		pasid.name="passageId";
-		pasid.value=location.pathname.replace(/\/passage\//,"");
 		var form=document.createElement("form");
 		form.method="get";
 		form.action=$("#article").attr("data-url");
