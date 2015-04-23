@@ -427,9 +427,7 @@ window.onload=function(){
 	});
 	//返回按钮
 	$("#backwards").click(function(){
-		if(window.history.back()){}
-		else 
-			window.open("./index","_self");
+		window.open("/index","_self");
 	});
 	
 
