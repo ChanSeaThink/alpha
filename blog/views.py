@@ -90,7 +90,10 @@ def saveWritting(request):
             picNameLs.append(pss[13:])
         else:
             continue
-
+    #此变量用于保存文章的ID
+    ID = 0
+    passageObj = Passage.objects.get(UserID = writerObj, Time = nt)
+    ID = passageObj.id
     for pn in picNameLs:
         cpobj = CachePicture.objects.get(ImageName = pn)
         #print 'sss',cpobj.ImagePath.name
@@ -106,18 +109,19 @@ def saveWritting(request):
             fm = 'jpeg'
         im.save(savepath, fm)
         picObj = Picture()
-        picObj.PassageID = Passage.objects.get(UserID = writerObj, Time = nt)
+        picObj.PassageID = passageObj
         picObj.OriginalImageName = pn
         picObj.OriginalImagePath = cpobj.ImagePath
         picObj.CompressedImageName = 'thumnail'+cpobj.ImageName
         picObj.CompressedImagePath.name = os.path.join('compressedpictures' ,'thumnail'+cpobj.ImageName)
         picObj.save()
         cpobj.delete()
+    #删除缓存表中的数据以及对应的图片。
     deleteCachePicLs = CachePicture.objects.filter(UserName = username)
     for pic in deleteCachePicLs:
         os.remove(os.path.join(settings.MEDIA_ROOT, pic.ImagePath.name))
         pic.delete()
-    return HttpResponse('Get it')
+    return HttpResponseRedirect('/passage/'+ str(ID))
 
 def savePicture(request):
     #print request.FILES
@@ -163,7 +167,7 @@ def showPicture(request, ImgName):
         pictureObj = Picture.objects.get(OriginalImageName = ImgName)
         return HttpResponse(pictureObj.OriginalImagePath, 'image')
     else:
-        if '/writting' in request.META['HTTP_REFERER']:
+        if '/writting' in request.META['HTTP_REFERER'] or '/change/' in request.META['HTTP_REFERER']:
             cachePictureObj = CachePicture.objects.get(ImageName = ImgName)
             #os.path.join(settings.MEDIA_ROOT, str(p.image))
             #print cachePictureObj.id
@@ -178,9 +182,79 @@ def showThumnail(request, ImgName):
     thumnailObj = Picture.objects.get(CompressedImageName = ImgName)
     return HttpResponse(thumnailObj.CompressedImagePath, 'image')
 
+def saveChange(request, ID):
+    username = request.session.get('username', '')
+    if username == '':
+        return HttpResponseRedirect('/index')
+    title = request.POST['title']
+    text = request.POST['text']
+    textNoHtml = re.sub('<[^>]*?>','',text)
 
+    if len(textNoHtml) < 120:
+        shortContent = textNoHtml + '......'
+    else:
+        shortContent = textNoHtml[0:120] + '......'
+    #保存更新之后的文章标题，内容和概述。
+    passageObj = Passage.objects.get(id = int(ID))
+    passageObj.Title = title
+    passageObj.ShortContent = shortContent
+    passageObj.LongContent = text
+    passageObj.save()
 
+    #picSrcLs获取文中所有图片的路径
+    picSrcLs = re.findall('<img src="(.*?)">',text)
+    #picNameLs获取文中所有图片的文件名
+    picNameLs = []
+    for pss in picSrcLs:
+        if pss[0:13]=='/showPicture/':
+            picNameLs.append(pss[13:])
+        else:
+            continue
+    #picSavedObjLs存储所有已保存的图片数据。
+    picSavedObjLs = Picture.objects.filter(PassageID = passageObj)
+    #picStayLs用于保存仍然存在的图片名称。
+    picStayLs = []
+    #以下循环用于判断：图片表中有没有图片在编辑中被删除。
+    for picObj in picSavedObjLs:
+        if picObj.OriginalImageName in picNameLs:
+            picStayLs.append(picObj.OriginalImageName)
+            continue
+        else:
+            os.remove(os.path.join(settings.MEDIA_ROOT, picObj.OriginalImagePath.name))
+            os.remove(os.path.join(settings.MEDIA_ROOT, picObj.CompressedImagePath.name))
+            picObj.delete()
+    #删除picNameLs已存在Picture表中的图片名称,剩下的图片都在PictureCache图片缓存表中。
+    for pic in picStayLs:
+        picNameLs.remove(pic)
 
+    for pn in picNameLs:
+        cpobj = CachePicture.objects.get(ImageName = pn)
+        #print 'sss',cpobj.ImagePath.name
+        im = Image.open(os.path.join(settings.MEDIA_ROOT, cpobj.ImagePath.name))
+        w, h = im.size
+        if w > h:
+            im.thumbnail((66, (66*h)//w))
+        else:
+            im.thumbnail(((w*74)//h, 74))
+        savepath = os.path.join(settings.MEDIA_ROOT, 'compressedpictures' ,'thumnail'+cpobj.ImageName)
+        fm = cpobj.ImageName.split('.')[1]
+        if fm.lower() == 'jpg':
+            fm = 'jpeg'
+        im.save(savepath, fm)
+        picObj = Picture()
+        picObj.PassageID = passageObj
+        picObj.OriginalImageName = pn
+        picObj.OriginalImagePath = cpobj.ImagePath
+        picObj.CompressedImageName = 'thumnail'+cpobj.ImageName
+        picObj.CompressedImagePath.name = os.path.join('compressedpictures' ,'thumnail'+cpobj.ImageName)
+        picObj.save()
+        cpobj.delete()
+    #删除缓存表中的数据以及对应的图片。
+    deleteCachePicLs = CachePicture.objects.filter(UserName = username)
+    for pic in deleteCachePicLs:
+        os.remove(os.path.join(settings.MEDIA_ROOT, pic.ImagePath.name))
+        pic.delete()
+    return HttpResponseRedirect('/passage/'+ID)
 
 
 
