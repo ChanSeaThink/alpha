@@ -6,6 +6,7 @@ from lnr.models import User
 import time, random, json, re, Image, os
 from datetime import datetime
 from django.conf import settings
+#from django.template import Template, Context
 # Create your views here.
 def index(request):
     username = request.session.get('username', '')
@@ -17,10 +18,8 @@ def index(request):
     for passage in passageLs:
         thumnailLs = Picture.objects.filter(PassageID = passage)
         indexDic.append({'passage':passage, 'thumnailLs':thumnailLs})
-
-    for ss in indexDic:
-        print ss
-
+    #for ss in indexDic:
+    #    print ss
     if username == '':
         #print '---->1'
         return render_to_response('index.html', {'logined':username, 'dic':indexDic})
@@ -268,5 +267,12 @@ def saveChange(request, ID):
         pic.delete()
     return HttpResponseRedirect('/passage/'+ID)
 
-
+def morePassage(request):
+    idNum = int(request.POST['id'].split('/')[2])
+    passageLs = Passage.objects.filter(id__lt = idNum)[0:8]
+    indexDic = []
+    for passage in passageLs:
+        thumnailLs = Picture.objects.filter(PassageID = passage)
+        indexDic.append({'passage':passage, 'thumnailLs':thumnailLs})
+    return render_to_response('morePassage.html', {'dic':indexDic})
 

@@ -56,8 +56,8 @@ window.onload=function(){
 		if(scrollHeight-clientHeight<50){
 			$(window).unbind("scroll",ajaxScroll);
 			$.ajax({
-				url:"/writting",
-				type:"get",
+				url:"/morePassage",
+				type:"post",
 				data:{"id":$("#content h2:last").attr("data-url")},
 				success:function(data){alert(data);
 					$("#content").append(data);

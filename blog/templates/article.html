@@ -78,6 +78,7 @@
 						</div>
 					</div>
 				</div>
+        		{% if not logined %}
 				<div class="input_box">
 					<img src="{% static "img/article/mail.png" %}" />
 					<input type="text" placeholder="请输入邮箱" />
@@ -86,6 +87,7 @@
 					<img src="{% static "img/article/lock.png" %}" />
 					<input type="text" placeholder="请输入密码" />
 				</div>
+				{% endif %}
 				<p class="clear"></p>
 			</div>
 			<div id="comments_area">
