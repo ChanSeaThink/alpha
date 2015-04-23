@@ -1,8 +1,6 @@
 
 
 window.onload=function(){
-	var base=$(document).width();
-	$(".fill").css("width",(base-600)/2+"px");
 
 	$(window).resize(function(){
 		base=$(document).width();

@@ -1,6 +1,4 @@
 window.onload=function(){
-	var base=$(document).width();
-	$(".fill").css("width",(base-780)/2+"px");
 	$("#origin_pic img").css({"max-width":$(window).width()+"px","max-height":$(window).height()+"px"});
 
 	$(window).resize(function(){
