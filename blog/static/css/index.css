@@ -281,7 +281,11 @@ ul
 	font-size:16px;
 	color:#6699ff;
 	}
-
+#more
+	{
+	text-align:center;
+	padding:20px 0;
+	}
 /*----------------------popup----------------------*/
 #popup
 	{

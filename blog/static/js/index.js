@@ -13,8 +13,12 @@ window.onload=function(){
 	});
 
 	var scrollFlag=0;
+	var scrollHeight=$(document).height();
+	var clientHeight=$(window).height()+$(window).scrollTop();
 	//0表示视窗在最顶，1表示不在最顶
-	$(window).scroll(function(){
+	$(window).scroll(scrollP);
+	$(window).scroll(ajaxScroll);
+	function scrollP(){
 		var top=$(window).scrollTop();
 		var flag;
 		if(top>0){
@@ -23,25 +27,49 @@ window.onload=function(){
 		else {
 			flag=0;
 		}
-		//从顶滑下
-		if(flag==1&&scrollFlag!=flag){
-			$("#intro_top").hide();
-			$("#nav_top").css("background-color","rgba(102,153,255,0.8)");
-			$("#search").css("margin-top","15px");
-			$("#lr").css("margin-top","17px");
-			$("#user").css("margin-top","0px");
-			scrollFlag=1;
+		if(scrollFlag==flag){
+			return;
 		}
-		//从下滑到顶
-		else if(flag==0&&scrollFlag!=flag){
-			$("#intro_top").show();
-			$("#nav_top").css("background-color","rgba(102,153,255,1)");
-			$("#search").css("margin-top","25px");
-			$("#lr").css("margin-top","27px");
-			$("#user").css("margin-top","10px");
-			scrollFlag=0;
+		else{
+			//从顶滑下
+			if(flag==1){
+				$("#intro_top").hide();
+				$("#nav_top").css("background-color","rgba(102,153,255,0.8)");
+				$("#search").css("margin-top","15px");
+				$("#lr").css("margin-top","17px");
+				$("#user").css("margin-top","0px");
+				scrollFlag=1;
+			}
+			//从下滑到顶
+			else if(flag==0){
+				$("#intro_top").show();
+				$("#nav_top").css("background-color","rgba(102,153,255,1)");
+				$("#search").css("margin-top","25px");
+				$("#lr").css("margin-top","27px");
+				$("#user").css("margin-top","10px");
+				scrollFlag=0;
+			}
 		}
-	});
+	}
+	function ajaxScroll(){
+		clientHeight=$(window).height()+$(window).scrollTop();
+		if(scrollHeight-clientHeight<50){
+			$(window).unbind("scroll",ajaxScroll);
+			$.ajax({
+				url:"/writting",
+				type:"get",
+				data:{"id":$("#content h2:last").attr("data-url")},
+				success:function(data){alert(data);
+					$("#content").append(data);
+					scrollHeight=$(document).height();
+					setTimeout(function(){$(window).bind("scroll",ajaxScroll);},1000);
+				},
+				error:function(){
+					alert("请求更多出错");
+				}
+			});
+		}
+	}
 
 	//顶栏
 	$("#list_writting").mouseover(function(){
