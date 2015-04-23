@@ -10,10 +10,10 @@ window.onload=function(){
 	});
 
 	//顶栏
-	$("#list_writting").mouseover(function(){
-		var src=$("#list_writting img").attr("src");
+	$("#list_edit").mouseover(function(){
+		var src=$("#list_edit img").attr("src");
 		var src2=src.replace(/pen/,"pen2");
-		$("#list_writting img").attr({"src":src2});
+		$("#list_edit img").attr({"src":src2});
 	});
 	$("#list_setting").mouseover(function(){
 		var src=$("#list_setting img").attr("src");
@@ -25,10 +25,10 @@ window.onload=function(){
 		var src2=src.replace(/paperplane/,"paperplane2");
 		$("#list_logout img").attr({"src":src2});
 	});
-	$("#list_writting").mouseout(function(){
-		var src=$("#list_writting img").attr("src");
+	$("#list_edit").mouseout(function(){
+		var src=$("#list_edit img").attr("src");
 		var src2=src.replace(/pen2/,"pen");
-		$("#list_writting img").attr({"src":src2});
+		$("#list_edit img").attr({"src":src2});
 	});
 	$("#list_setting").mouseout(function(){
 		var src=$("#list_setting img").attr("src");
@@ -40,8 +40,15 @@ window.onload=function(){
 		var src2=src.replace(/paperplane2/,"paperplane");
 		$("#list_logout img").attr({"src":src2});
 	});
-	$("#list_writting").click(function(){
-		window.open("/writting","_self");
+	$("#list_edit").click(function(){
+		var pasid=document.createElement("input");
+		pasid.type="text";
+		pasid.name="passageId";
+		pasid.value=location.pathname.replace(/\/passage\//,"");
+		var form=document.createElement("form");
+		form.method="get";
+		form.action=$("#article").attr("data-url");
+		form.submit();
 	});
 	$("#list_logout").click(function(){
 		var form=document.createElement("form");

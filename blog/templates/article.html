@@ -26,7 +26,7 @@
 			<div id="user_face"><img src=""></div>
 			<div id="list_top">
 				<ul>
-					<li id="list_writting">
+					<li id="list_edit">
 						<img src="{% static "img/pen.png" %}">
 						<p>编辑</p>
 					</li>
@@ -58,7 +58,7 @@
 	<div id="main">
 		<div class="fill"></div>
 		<div id="content">
-			<div id="article">
+			<div id="article" data-url="/writting">
 				<h1>{{passage.Title}}</h1>
 				<p id="article_data">{{passage.Time}}&emsp;{{passage.readTimes}}次阅读</p>
 				<div id="text">
