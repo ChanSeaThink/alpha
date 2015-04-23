@@ -12,7 +12,7 @@ def index(request):
     #print '(',username,')'
     passageLs = Passage.objects.all()[0:8]
     #for pl in passageLs:
-    #    print pl.Time
+    #print pl.Time
     indexDic = []
     for passage in passageLs:
         thumnailLs = Picture.objects.filter(PassageID = passage)
@@ -41,11 +41,20 @@ def passage(request, ID):
         #print '---->1'
         return render_to_response('article.html', {'logined':username, 'passage':passage})
     else:
+        permission = request.session.get('permission', '')
+        if permission == 2:
+            writePermission = 'OK'
+        else:
+            writePermission = ''
         #print '---->2'
-        return render_to_response('article.html', {'logined':username, 'username':username, 'passage':passage})
+        return render_to_response('article.html', {'logined':username, 'username':username, 'passage':passage, 'writePermission':writePermission})
 
 def writting(request):
     username = request.session.get('username', '')
+    permission = request.session.get('permission', '')
+    if permission != 2:
+        return HttpResponseRedirect('/index')
+
     if username == '':
         return HttpResponseRedirect('/index')
     else:
@@ -53,6 +62,9 @@ def writting(request):
 
 def change(request, ID):
     username = request.session.get('username', '')
+    permission = request.session.get('permission', '')
+    if permission != 2:
+        return HttpResponseRedirect('/index')
     passageObj = Passage.objects.get(id = int(ID))
     return render_to_response('change.html', {'username':username, 'passage':passageObj})
 

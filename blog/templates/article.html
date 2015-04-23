@@ -26,10 +26,12 @@
 			<div id="user_face"><img src=""></div>
 			<div id="list_top">
 				<ul>
+                    {% if writePermission %}
 					<li id="list_edit">
 						<img src="{% static "img/pen.png" %}">
 						<p>编辑</p>
 					</li>
+					{% endif %}
 					<li id="list_setting">
 						<img src="{% static "img/settings.png" %}">
 						<p>设置</p>
