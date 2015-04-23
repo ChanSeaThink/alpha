@@ -51,6 +51,9 @@ def writting(request):
     else:
         return render_to_response('writting.html', {'username':username})
 
+def change(request, ID):
+    return render_to_response('change.html')
+
 def saveWritting(request):
     #blog 应用中最重要的试图函数。
     #包括以下主要功能：1，保存博文；2，生成缩略图；3，把缓存表的图片信息移到源图表，然后清空缓存表。

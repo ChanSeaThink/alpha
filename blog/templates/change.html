@@ -100,10 +100,10 @@
 		<div id="content2">
 			<div>
 				<div id="title_box">
-					<input id="write_title" maxlength="30"></input>
+					<input id="write_title" maxlength="30">{{ passage.Title }}</input>
 				</div>
 				<div id="text_box">
-					<div id="write_text" contenteditable><p> </p><p><br></p></div>
+					<div id="write_text" contenteditable>{{ passage.LongContent }}<p> </p><p><br></p></div>
 				</div>
 			</div>
 		</div>
