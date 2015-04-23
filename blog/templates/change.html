@@ -7,10 +7,10 @@
 <meta name="description" content="">
 <meta name="keywords" content="">
 {% load staticfiles %}
-<link href="{% static "css/writting.css" %}" rel="stylesheet">
+<link href="{% static "css/change.css" %}" rel="stylesheet">
 <!--<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js" %}">
 </script>-->
-<script src="{% static "js/writting.js" %}">
+<script src="{% static "js/change.js" %}">
 </script>
 <script src="{% static "js/jquery-1.11.2.js" %}"></script>
 </head>
@@ -50,13 +50,9 @@
 	<div id="title">
    		<div id="formula_bar">
 			<ul>
-				<li class="nav2_right" id="article_pub">
+				<li class="nav2_right" id="article_pub" data-url="/writting">
 					<img src="{% static "img/writting/redo.png" %}">
 					<div>发布文章</div>
-				</li>
-				<li class="nav2_right" id="article_edit">
-					<img src="{% static "img/writting/pencil.png" %}">
-					<div>编辑</div>
 				</li>
 				<li class="nav2 nav2_left" id="first_nav2">
 					<img src="{% static "img/writting/image.png" %}">
