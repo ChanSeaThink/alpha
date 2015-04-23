@@ -47,7 +47,8 @@ def regist(request):
     userobj.Time = nt
     userobj.LastLoginTime = nt
     userobj.save()
-    request.session['username']=username
+    request.session['username'] = username
+    request.session['permission']= 1
     jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
     #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
     return HttpResponse(jsonObject,content_type="application/json")
@@ -83,13 +84,15 @@ def login(request):
         user_data.LastLoginTime = datetime.now()
         user_data.save()
         del request.session['CAPTCHA']
-        request.session['username']=user_data.UserName
+        request.session['username'] = user_data.UserName
+        request.session['permission'] = user_data.UserPermission
         jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
 
 def logout(request):
     del request.session['username']
+    del request.session['permission']
     return HttpResponseRedirect('index')
 
 def getCAPTCHA(request):

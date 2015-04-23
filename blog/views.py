@@ -25,8 +25,8 @@ def index(request):
         #print '---->1'
         return render_to_response('index.html', {'logined':username, 'dic':indexDic})
     else:
-        userObj = User.objects.get(UserName = username)
-        if userObj.UserPermission == 2:
+        permission = request.session.get('permission', '')
+        if permission == 2:
             writePermission = 'OK'
         else:
             writePermission = ''
