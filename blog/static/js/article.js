@@ -512,7 +512,7 @@ window.onload=function(){
 
 
 	//函数
-		function showPage(n,id){
+		function showPage(n,id,pn){
 			//根据显示项数目生成Ajax式页码栏
 			var max=10;
 			var half=Math.floor((max-1)/2);
@@ -547,7 +547,12 @@ window.onload=function(){
 				$("#"+id).append("<div>></div>");
 				grid=max+1;
 				$("#"+id+" div").click(function(){
-					var c=parseInt($(this).text());
+					if(pn){
+						var c=parseInt(pn);
+					}
+					else{
+						var c=parseInt($(this).text());
+					}
 					if(!c){
 						if(pagerecord<pages)
 							c=pagerecord+1;
@@ -590,5 +595,6 @@ window.onload=function(){
 			}
 			
 		}
-	showPage(200,"page");
+	showPage(200,"page",10);
+	$("#page div:first").click();
 }

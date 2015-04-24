@@ -12,7 +12,7 @@ window.onload=function(){
 		}
 	});
 
-	var scrollFlag=0;
+	var scrollFlag=0,scrollCount=0,pageCount=1;
 	var scrollHeight=$(document).height();
 	var clientHeight=$(window).height()+$(window).scrollTop();
 	//0表示视窗在最顶，1表示不在最顶
@@ -59,16 +59,59 @@ window.onload=function(){
 				url:"/morePassage",
 				type:"post",
 				data:{"id":$("#content h2:last").attr("data-url")},
-				success:function(data){alert(data);
-					$("#content").append(data);
+				success:function(data){
 					scrollHeight=$(document).height();
-					setTimeout(function(){$(window).bind("scroll",ajaxScroll);},1000);
+					scrollCount+=1;
+					$("#content").append(data.html);
+					if(scrollCount==2||(pageCount-1)*24+$("#content h2").length==parseInt(data.passageCount)){
+						$("#page").html("");
+						showPage(data.passageCount,"page",pageCount);
+						$("#page div:first").click();
+						$("#page div").click(pageClick);
+					}
+					else{
+						setTimeout(function(){$(window).bind("scroll",ajaxScroll);},200);
+					}
 				},
 				error:function(){
 					alert("请求更多出错");
 				}
 			});
 		}
+	}
+	function pageClick(){
+		var page=$(this).text();
+		if(page==">"){
+			pageCount+=1;
+		}
+		else if(page=="..."){
+			pageCount+=4;
+		}
+		else{
+			pageCount=parseInt(page);
+		}
+		$.ajax({
+			url:"morePassage",
+			type:"post",
+			data:{"page":pageCount},
+			success:function(data){
+				$("#content").html(data.html);
+				window.scrollTo(0,0);
+				if($("#content h2").length%8!=0||(pageCount-1)*24+$("#content h2").length==parseInt(data.passageCount)){
+					$("#page").html("");
+					showPage(data.passageCount,"page",pageCount);
+					$("#page div:first").click();
+					$("#page div").click(pageClick);
+				}
+				else{
+					$("#page").html("More");
+					$(window).scroll(ajaxScroll);
+				}
+			},
+			error:function(){
+				alert("页码错误");
+			}
+		});
 	}
 
 	//顶栏
@@ -595,4 +638,89 @@ window.onload=function(){
     for(var i=0;i<picbox.length;i++){
 		picbox[i].onmousewheel=picSlide;
 	}
+
+	//页码显示函数
+		function showPage(n,id,pn){
+			//根据显示项数目生成Ajax式页码栏
+			var max=10;
+			var half=Math.floor((max-1)/2);
+			var pages=Math.ceil(n/8);
+			var gridrecord=0;
+			var grid,pagerecord=1;
+			if(pages<=max){
+				for(var i=1;i<=pages;i++){
+					$("#"+id).append("<div>"+i+"</div>");
+				}
+				$("#"+id).append("<div>></div>");
+				grid=pages;
+				$("#"+id+" div").click(function(){
+					var c=parseInt($(this).text());
+					if(!c){
+						if(pagerecord<pages)
+							c=pagerecord+1;
+						else
+							return;
+					}
+					$("#"+id+" div:eq("+gridrecord+")").css("background-color","white");
+					$("#"+id+" div:eq("+(c-1)+")").css("background-color","#c1c1c1");
+					gridrecord=c-1;
+					pagerecord=c;
+				});
+			}
+			else{
+				for(var i=1;i<=max-1;i++){
+					$("#"+id).append("<div>"+i+"</div>");
+				}
+				$("#"+id).append("<div>...</div><div>"+pages+"</div>")
+				$("#"+id).append("<div>></div>");
+				grid=max+1;
+				$("#"+id+" div").click(function(){
+					if(pn){
+						var c=parseInt(pn);
+					}
+					else{
+						var c=parseInt($(this).text());
+					}
+					if(!c){
+						if(pagerecord<pages)
+							c=pagerecord+1;
+						else
+							return;
+					}
+					if(c-half>2&&c+half<pages-1){
+						$("#"+id+" div:eq("+1+")").text("...");
+						$("#"+id+" div:eq("+(max-1)+")").text("...");
+						for(var i=2;i<(max-1);i++){
+							$("#"+id+" div:eq("+i+")").text(i+c-(half+1));
+						}
+						$("#"+id+" div:eq("+gridrecord+")").css("background-color","white");
+						$("#"+id+" div:eq("+(half+1)+")").css("background-color","#c1c1c1");
+						gridrecord=(half+1);
+					}
+					else if(c-half<=2){
+						$("#"+id+" div:eq("+(max-1)+")").text("...");
+						for(var i=1;i<(max-1);i++){
+							$("#"+id+" div:eq("+i+")").text(i+1);
+						}
+						$("#"+id+" div:eq("+gridrecord+")").css("background-color","white");
+						$("#"+id+" div:eq("+(c-1)+")").css("background-color","#c1c1c1");
+						gridrecord=c-1;
+					}
+					else if(c+half>=pages-1){
+						$("#"+id+" div:eq("+1+")").text("...");
+						for(var i=2;i<max;i++){
+							$("#"+id+" div:eq("+i+")").text(i+pages-max);
+						}
+						$("#"+id+" div:eq("+gridrecord+")").css("background-color","white");
+						$("#"+id+" div:eq("+(max-(pages-c))+")").css("background-color","#c1c1c1");
+						gridrecord=max-(pages-c);
+					}
+					else{
+						alert("Error!")
+					}
+					pagerecord=c;
+				});
+			}
+			
+		}
 };
