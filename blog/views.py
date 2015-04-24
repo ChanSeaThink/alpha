@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
-from blog.models import Passage, Comment, Picture, CachePicture
+from blog.models import Passage, Comment, Picture, CachePicture, DataCount
 from lnr.models import User
 import time, random, json, re, Image, os
 from datetime import datetime
@@ -25,7 +25,7 @@ def index(request):
         return render_to_response('index.html', {'logined':username, 'dic':indexDic})
     else:
         permission = request.session.get('permission', '')
-        if permission == 2:
+        if permission >= 2:
             writePermission = 'OK'
         else:
             writePermission = ''
@@ -35,13 +35,14 @@ def index(request):
 def passage(request, ID):
     username = request.session.get('username', '')
     passage = Passage.objects.get(id = int(ID))
-
+    passage.readTimes += 1
+    passage.save()
     if username == '':
         #print '---->1'
         return render_to_response('article.html', {'logined':username, 'passage':passage})
     else:
         permission = request.session.get('permission', '')
-        if permission == 2:
+        if permission >= 2:
             writePermission = 'OK'
         else:
             writePermission = ''
@@ -51,7 +52,7 @@ def passage(request, ID):
 def writting(request):
     username = request.session.get('username', '')
     permission = request.session.get('permission', '')
-    if permission != 2:
+    if permission < 2:
         return HttpResponseRedirect('/index')
 
     if username == '':
@@ -62,7 +63,7 @@ def writting(request):
 def change(request, ID):
     username = request.session.get('username', '')
     permission = request.session.get('permission', '')
-    if permission != 2:
+    if permission < 2:
         return HttpResponseRedirect('/index')
     passageObj = Passage.objects.get(id = int(ID))
     return render_to_response('change.html', {'username':username, 'passage':passageObj})
@@ -132,6 +133,9 @@ def saveWritting(request):
     for pic in deleteCachePicLs:
         os.remove(os.path.join(settings.MEDIA_ROOT, pic.ImagePath.name))
         pic.delete()
+    dataCountObjLs = DataCount.objects.all()
+    dataCountObjLs[0].PassageCount += 1
+    dataCountObjLs[0].save()
     return HttpResponseRedirect('/passage/'+ str(ID))
 
 def savePicture(request):
@@ -178,13 +182,21 @@ def showPicture(request, ImgName):
         pictureObj = Picture.objects.get(OriginalImageName = ImgName)
         return HttpResponse(pictureObj.OriginalImagePath, 'image')
     else:
-        if '/writting' in request.META['HTTP_REFERER'] or '/change/' in request.META['HTTP_REFERER']:
+        print 'here'
+        if '/writting' in request.META['HTTP_REFERER']:
             cachePictureObj = CachePicture.objects.get(ImageName = ImgName)
             #os.path.join(settings.MEDIA_ROOT, str(p.image))
             #print cachePictureObj.id
             #print cachePictureObj.ImagePath
             #返回存在缓存里的图片
             return HttpResponse(cachePictureObj.ImagePath, 'image')
+        elif '/change/' in request.META['HTTP_REFERER']:
+            cachePictureObjLs = CachePicture.objects.filter(ImageName = ImgName)
+            if len(cachePictureObjLs) != 0:
+                return HttpResponse(cachePictureObjLs[0].ImagePath, 'image')
+            else:
+                pictureObj = Picture.objects.get(OriginalImageName = ImgName)
+                return HttpResponse(pictureObj.OriginalImagePath, 'image')
         else:
             pictureObj = Picture.objects.get(OriginalImageName = ImgName)
             return HttpResponse(pictureObj.OriginalImagePath, 'image')
@@ -276,3 +288,18 @@ def morePassage(request):
         indexDic.append({'passage':passage, 'thumnailLs':thumnailLs})
     return render_to_response('morePassage.html', {'dic':indexDic})
 
+def updateDataCount(request):
+    username = request.session.get('username', '')
+    permission = request.session.get('permission', '')
+    if username != '' and permission > 2:
+        dataCountObjLs = DataCount.objects.all()
+        if len(dataCountObjLs) == 0:
+            dataCountObj = DataCount()
+            dataCountObj.PassageCount = len(Passage.objects.all())
+            dataCountObj.save()
+        else:
+            dataCountObjLs[0].PassageCount = len(Passage.objects.all())
+            dataCountObjLs[0].save()
+        return HttpResponse('Update Success.')
+    else:
+        return HttpResponseRedirect('/index')

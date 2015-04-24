@@ -65,3 +65,12 @@ class CachePicture(models.Model):
     ImagePath = models.ImageField(upload_to='pictures')
     UserName = models.CharField(max_length = 30)
     ImageName = models.CharField(max_length= 50)
+
+class DataCount(models.Model):
+    '''
+    此表用于记录统计数据:
+
+    PassageCount：记录文章数量。
+    UserCount：记录用户数量。
+    '''
+    PassageCount = models.IntegerField(default = 0)
