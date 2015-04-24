@@ -1,4 +1,5 @@
 # -*- coding: utf8 -*-
+from django.template.loader import get_template
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from blog.models import Passage, Comment, Picture, CachePicture, DataCount
@@ -6,7 +7,7 @@ from lnr.models import User
 import time, random, json, re, Image, os
 from datetime import datetime
 from django.conf import settings
-#from django.template import Template, Context
+from django.template import Template, Context
 # Create your views here.
 def index(request):
     username = request.session.get('username', '')
@@ -286,7 +287,14 @@ def morePassage(request):
     for passage in passageLs:
         thumnailLs = Picture.objects.filter(PassageID = passage)
         indexDic.append({'passage':passage, 'thumnailLs':thumnailLs})
-    return render_to_response('morePassage.html', {'dic':indexDic})
+    t = get_template('morePassage.html')
+    c = Context({'dic':indexDic})
+    html = t.render(c)
+    passageCount = DataCount.objects.all()[0].PassageCount
+    jsonObject = json.dumps({'html':html, 'passageCount':passageCount},ensure_ascii = False)
+    #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+    return HttpResponse(jsonObject,content_type="application/json")
+    #return render_to_response('morePassage.html', {'dic':indexDic})
 
 def updateDataCount(request):
     username = request.session.get('username', '')
