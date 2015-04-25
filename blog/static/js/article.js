@@ -484,7 +484,7 @@ window.onload=function(){
 			return;
 		}
 		$.ajax({
-			url:"saveComment",
+			url:"/saveComment",
 			type:"post",
 			data:{"commentText":$("#comment").html()},
 			success:function(data){
@@ -634,7 +634,7 @@ window.onload=function(){
 			pageCount=parseInt(page);
 		}
 		$.ajax({
-			url:"moreComment",
+			url:"/moreComment",
 			type:"post",
 			data:{"page":pageCount},
 			success:function(data){

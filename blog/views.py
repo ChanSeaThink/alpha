@@ -36,11 +36,12 @@ def index(request):
 def passage(request, ID):
     username = request.session.get('username', '')
     passage = Passage.objects.get(id = int(ID))
-    passage.readTimes += 1
+    passage.ReadTimes += 1
     passage.save()
+    commentObjLs = Comment.objects.filter(PassageID = passage)[0:10]
     if username == '':
         #print '---->1'
-        return render_to_response('article.html', {'logined':username, 'passage':passage})
+        return render_to_response('article.html', {'logined':username, 'passage':passage, 'commentObjLs':commentObjLs})
     else:
         permission = request.session.get('permission', '')
         if permission >= 2:
@@ -48,7 +49,7 @@ def passage(request, ID):
         else:
             writePermission = ''
         #print '---->2'
-        return render_to_response('article.html', {'logined':username, 'username':username, 'passage':passage, 'writePermission':writePermission})
+        return render_to_response('article.html', {'logined':username, 'username':username, 'passage':passage, 'writePermission':writePermission, 'commentObjLs':commentObjLs})
 
 def writting(request):
     username = request.session.get('username', '')
@@ -147,6 +148,30 @@ def saveWritting(request):
         dataCountObj.save()
     #return HttpResponseRedirect('/index')
     return HttpResponseRedirect('/passage/'+ str(ID))
+
+def saveComment(request):
+    username = request.session.get('username', '')
+    permission = request.session.get('permission', '')
+    commentText = request.POST['commentText']
+    passageID = int(request.META['HTTP_REFERER'].split('/passage/')[1])
+    passageObj = Passage.objects.get(id = passageID)
+    passageObj.CommentTimes += 1
+    passageObj.save()
+    commentObj = Comment()
+    commentObj.UserID = User.objects.get(UserName = username)
+    commentObj.UserName = username
+    commentObj.PassageID = passageObj
+    commentObj.Time = datetime.now()
+    commentObj.Content = commentText
+    commentObj.save()
+    commentObjLs = Comment.objects.all()[0:10]
+    t = get_template('moreComment.html')
+    c = Context({'commentObjLs':commentObjLs})
+    html = t.render(c)
+    #return HttpResponse('Hello')
+    jsonObject = json.dumps({'html':html, 'commentCount':passageObj.CommentTimes},ensure_ascii = False)
+    #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+    return HttpResponse(jsonObject,content_type="application/json")
 
 def savePicture(request):
     #print request.FILES
@@ -320,6 +345,17 @@ def morePassage(request):
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
         #return render_to_response('morePassage.html', {'dic':indexDic})
+
+def moreComment(request):
+    pageNum = int(request.POST['page'])
+    commentObjLs = Comment.objects.all()[10 * ( pageNum - 1 ):10 * ( pageNum - 1 ) + 10]
+    t = get_template('moreComment.html')
+    c = Context({'commentObjLs':commentObjLs})
+    passageObj = Passage.objects.get(id = int(request.META['HTTP_REFERER'].split('/passage/')[1]))
+    html = t.render(c)
+    jsonObject = json.dumps({'html':html, 'commentCount':passageObj.CommentTimes},ensure_ascii = False)
+    #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+    return HttpResponse(jsonObject,content_type="application/json")
 
 def updateDataCount(request):
     username = request.session.get('username', '')

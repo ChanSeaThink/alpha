@@ -27,8 +27,20 @@ class Migration(migrations.Migration):
             name='Comment',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('UserName', models.CharField(max_length=30)),
                 ('Time', models.DateTimeField()),
                 ('Content', models.TextField()),
+            ],
+            options={
+                'ordering': ['-Time'],
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='DataCount',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('PassageCount', models.IntegerField(default=0)),
             ],
             options={
             },
@@ -42,9 +54,12 @@ class Migration(migrations.Migration):
                 ('Time', models.DateTimeField()),
                 ('ShortContent', models.CharField(max_length=400)),
                 ('LongContent', models.TextField()),
+                ('readTimes', models.IntegerField(default=0)),
+                ('commentTimes', models.IntegerField(default=0)),
                 ('UserID', models.ForeignKey(to='lnr.User')),
             ],
             options={
+                'ordering': ['-Time'],
             },
             bases=(models.Model,),
         ),

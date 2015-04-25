@@ -18,8 +18,8 @@ class Passage(models.Model):
     Time = models.DateTimeField()
     ShortContent = models.CharField(max_length = 400)
     LongContent = models.TextField()
-    readTimes = models.IntegerField(default = 0)
-    commentTimes = models.IntegerField(default = 0)
+    ReadTimes = models.IntegerField(default = 0)
+    CommentTimes = models.IntegerField(default = 0)
     
     class Meta:
         ordering = ['-Time']
@@ -34,9 +34,13 @@ class Comment(models.Model):
     Content：评论内容。
     '''
     UserID = models.ForeignKey('lnr.User')
+    UserName = models.CharField(max_length = 30)
     PassageID = models.ForeignKey(Passage)
     Time = models.DateTimeField()
     Content = models.TextField()
+    
+    class Meta:
+        ordering = ['-Time']
 
 class Picture(models.Model):
     '''

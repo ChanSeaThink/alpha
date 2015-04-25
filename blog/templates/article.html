@@ -62,14 +62,16 @@
 		<div id="content">
 			<div id="article" data-url="/change/{{ passage.id }}">
 				<h1>{{passage.Title}}</h1>
-				<p id="article_data">{{passage.Time}}&emsp;{{passage.readTimes}}次阅读</p>
+				<p id="article_data">{{passage.Time}}&emsp;{{passage.ReadTimes}}次阅读</p>
 				<div id="text">
 					{{passage.LongContent | safe}}
 				</div>
 			</div>
 			<div style="position:relative">
 				<div id="comment" contenteditable><p> </p><p><br></p></div>
+        		{% if not logined %}
 				<div id="kabe">登录后才可以评论~<img src="{% static "img/article/smiley2.png" %}"></div>
+				{% endif %}
 			</div>
 			<div id="edit">
 				<div id="send_message">发表评论</div>
@@ -81,26 +83,18 @@
 						</div>
 					</div>
 				</div>
-        		{% if not logined %}
-				<div class="input_box">
-					<img src="{% static "img/article/mail.png" %}" />
-					<input type="text" placeholder="请输入邮箱" />
-				</div>
-				<div class="input_box" id="email_box">
-					<img src="{% static "img/article/lock.png" %}" />
-					<input type="text" placeholder="请输入密码" />
-				</div>
-				{% endif %}
 				<p class="clear"></p>
 			</div>
-			<div id="comments_area" data-n="100">
+			<div id="comments_area" data-n="{{ passage.CommentTimes }}">
+			    {% for commentObj in commentObjLs %}
 				<div>
 					<img src="">
-					<p class="username">多啦A梦</p>
-					<p class="time">2015.03.12&nbsp;&nbsp;21:10</p>
-					<div><p>苹果和微软不过如此…楼猪有了开源安卓这世界才怎么疯狂…这就是力量，苹果硬件跟不上咯</p></div>
+					<p class="username">{{ commentObj.UserName }}</p>
+					<p class="time">{{ commentObj.Time }}</p>
+					<div>{{ commentObj.Content | safe }}</div>
 					<p class="clear"></p>
 				</div>
+				{% endfor %}
 			</div>
 			<div id="page"></div>
 		</div>

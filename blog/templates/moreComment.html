@@ -1,0 +1,9 @@
+{% for commentObj in commentObjLs %}
+<div>
+	<img src="">
+	<p class="username">{{ commentObj.UserName }}</p>
+	<p class="time">{{ commentObj.Time }}</p>
+	<div>{{ commentObj.Content | safe}}</div>
+	<p class="clear"></p>
+</div>
+{% endfor %}
