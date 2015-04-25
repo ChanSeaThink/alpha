@@ -67,7 +67,10 @@
 					{{passage.LongContent | safe}}
 				</div>
 			</div>
-			<div id="comment" contenteditable><p> </p><p><br></p></div>
+			<div style="position:relative">
+				<div id="comment" contenteditable><p> </p><p><br></p></div>
+				<div id="kabe">登录后才可以评论~<img src="{% static "img/article/smiley2.png" %}"></div>
+			</div>
 			<div id="edit">
 				<div id="send_message">发表评论</div>
 				<div id="face">

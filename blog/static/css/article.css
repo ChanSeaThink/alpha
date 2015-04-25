@@ -301,6 +301,7 @@ textarea
 	}
 #face
 	{
+	display:none;
 	}
 #face>div
 	{
@@ -361,6 +362,27 @@ textarea
 #email_box
 	{
 	width:40%;
+	}
+#kabe
+	{
+	position:absolute;
+	top:0px;
+	left:0px;
+	padding:83px 0;
+	width:600px;
+	background-color:#c1c1c1;
+	font-size:30px;
+	line-height:40px;
+	color:#414141;
+	text-align:center;
+	opacity:0.5;
+	z-index:3;
+	}
+#kabe img
+	{
+	position:relative;
+	top:3px;
+	max-width:30px;
 	}
 #comments_area
 	{

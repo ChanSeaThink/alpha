@@ -483,45 +483,37 @@ window.onload=function(){
 			alert("字数需在500以内");
 			return;
 		}
-		var email=$(".input_box:eq(0) input").val();
-		if(!pattern2.test(email)){
-			alert("邮箱格式有误");
-			return;
-		}
-		var password=$(".input_box:eq(1) input").val();
-		if(password.replace(/\s/g,"").length==0){
-			alert("密码为空");
-			return;
-		}
-		var commentText=document.createElement("input");
-		commentText.name="commentText";
-		commentText.type="text";
-		commentText.value=$("#comment").html();
-		var commentEmail=document.createElement("input");
-		commentEmail.name="commentEmail";
-		commentEmail.type="text";
-		commentEmail.value=email;
-		var commentPassword=document.createElement("input");
-		commentPassword.name="commentPassword";
-		commentPassword.type="text";
-		commentPassword.value=password;
-		var commentForm=document.createElement("form");
-		commentForm.action="/saveComment";
-		commentForm.method="POST";
-		commentForm.appendChild(commentText);
-		commentForm.appendChild(commentEmail);
-		commentForm.appendChild(commentPassword);
-		commentForm.submit();
+		$.ajax({
+			url:"saveComment",
+			type:"post",
+			data:{"commentText":$("#comment").html()},
+			success:function(data){
+				$("#comments_area").html(data.html);
+				$(window).scrollTop($("#comments_area").offset().top);
+				$("#page").html("");
+				pageCount=1;
+				showPage(data.commentCount,"page",pageCount);
+				$("#page div:first").click();
+				$("#page div").click(pageClick);
+			},
+			error:function(){
+				alert("发送评论出错");
+			}
+		});
 	});
 	//*/
 
 
 	//函数
-		function showPage(n,id,pn){
+		function showPage(num,id,pn){
 			//根据显示项数目生成Ajax式页码栏
+			var n=parseInt(num);
+			if(n<=10){
+				return;
+			}
 			var max=10;
 			var half=Math.floor((max-1)/2);
-			var pages=Math.ceil(n/8);
+			var pages=Math.ceil(n/10);
 			var gridrecord=0;
 			var grid,pagerecord=1;
 			if(pages<=max){
