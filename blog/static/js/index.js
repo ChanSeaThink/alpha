@@ -60,9 +60,9 @@ window.onload=function(){
 				type:"post",
 				data:{"id":$("#content h2:last").attr("data-url")},
 				success:function(data){
-					scrollHeight=$(document).height();
 					scrollCount+=1;
 					$("#content").append(data.html);
+					scrollHeight=$(document).height();
 					if(scrollCount==2||(pageCount-1)*24+$("#content h2").length==parseInt(data.passageCount)){
 						$("#page").html("");
 						showPage(data.passageCount,"page",pageCount);
@@ -642,7 +642,7 @@ window.onload=function(){
 	//页码显示函数
 		function showPage(n,id,pn){
 			//根据显示项数目生成Ajax式页码栏
-			if(n<24){
+			if(n<=24){
 				$("#"+id).html("No More");
 				return;
 			}
