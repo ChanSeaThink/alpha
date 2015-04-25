@@ -290,21 +290,36 @@ def saveChange(request, ID):
     return HttpResponseRedirect('/passage/'+ID)
 
 def morePassage(request):
-    #pageNum = 
-    idNum = int(request.POST['id'].split('/')[2])
-    passageLs = Passage.objects.filter(id__lt = idNum)[0:8]
-    indexDic = []
-    for passage in passageLs:
-        thumnailLs = Picture.objects.filter(PassageID = passage)
-        indexDic.append({'passage':passage, 'thumnailLs':thumnailLs})
-    t = get_template('morePassage.html')
-    c = Context({'dic':indexDic})
-    html = t.render(c)
-    passageCount = DataCount.objects.all()[0].PassageCount
-    jsonObject = json.dumps({'html':html, 'passageCount':passageCount},ensure_ascii = False)
-    #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
-    return HttpResponse(jsonObject,content_type="application/json")
-    #return render_to_response('morePassage.html', {'dic':indexDic})
+    if not request.POST.has_key('page'):
+        idNum = int(request.POST['id'].split('/')[2])
+        passageLs = Passage.objects.filter(id__lt = idNum)[0:8]
+        indexDic = []
+        for passage in passageLs:
+            thumnailLs = Picture.objects.filter(PassageID = passage)
+            indexDic.append({'passage':passage, 'thumnailLs':thumnailLs})
+        t = get_template('morePassage.html')
+        c = Context({'dic':indexDic})
+        html = t.render(c)
+        passageCount = DataCount.objects.all()[0].PassageCount
+        jsonObject = json.dumps({'html':html, 'passageCount':passageCount},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+        #return render_to_response('morePassage.html', {'dic':indexDic})
+    else:
+        pageNum = int(request.POST['page'])
+        passageLs = Passage.objects.all()[24 * ( pageNum - 1 ):24 * ( pageNum - 1 ) + 8]
+        indexDic = []
+        for passage in passageLs:
+            thumnailLs = Picture.objects.filter(PassageID = passage)
+            indexDic.append({'passage':passage, 'thumnailLs':thumnailLs})
+        t = get_template('morePassage.html')
+        c = Context({'dic':indexDic})
+        html = t.render(c)
+        passageCount = DataCount.objects.all()[0].PassageCount
+        jsonObject = json.dumps({'html':html, 'passageCount':passageCount},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
+        #return render_to_response('morePassage.html', {'dic':indexDic})
 
 def updateDataCount(request):
     username = request.session.get('username', '')
