@@ -134,9 +134,18 @@ def saveWritting(request):
     for pic in deleteCachePicLs:
         os.remove(os.path.join(settings.MEDIA_ROOT, pic.ImagePath.name))
         pic.delete()
+    #以下到return代码前的代码用于文章数量增加1
     dataCountObjLs = DataCount.objects.all()
-    dataCountObjLs[0].PassageCount += 1
-    dataCountObjLs[0].save()
+    if len(dataCountObjLs) == 0:
+        dataCountObj = DataCount()
+        dataCountObj.PassageCount = 1
+        dataCountObj.save()
+    else:
+        dataCountObj = dataCountObjLs[0]
+        dataCountObj.PassageCount += 1
+        print dataCountObj.PassageCount
+        dataCountObj.save()
+    #return HttpResponseRedirect('/index')
     return HttpResponseRedirect('/passage/'+ str(ID))
 
 def savePicture(request):
@@ -183,7 +192,7 @@ def showPicture(request, ImgName):
         pictureObj = Picture.objects.get(OriginalImageName = ImgName)
         return HttpResponse(pictureObj.OriginalImagePath, 'image')
     else:
-        print 'here'
+        #print 'here'
         if '/writting' in request.META['HTTP_REFERER']:
             cachePictureObj = CachePicture.objects.get(ImageName = ImgName)
             #os.path.join(settings.MEDIA_ROOT, str(p.image))
@@ -281,6 +290,7 @@ def saveChange(request, ID):
     return HttpResponseRedirect('/passage/'+ID)
 
 def morePassage(request):
+    #pageNum = 
     idNum = int(request.POST['id'].split('/')[2])
     passageLs = Passage.objects.filter(id__lt = idNum)[0:8]
     indexDic = []
