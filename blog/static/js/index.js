@@ -53,7 +53,7 @@ window.onload=function(){
 	}
 	function ajaxScroll(){
 		clientHeight=$(window).height()+$(window).scrollTop();
-		if(scrollHeight-clientHeight<50){
+		if(scrollHeight-clientHeight<30){
 			$(window).unbind("scroll",ajaxScroll);
 			$.ajax({
 				url:"/morePassage",
@@ -82,10 +82,21 @@ window.onload=function(){
 	function pageClick(){
 		var page=$(this).text();
 		if(page==">"){
-			pageCount+=1;
+			var i=$("#page>div").length;
+			if($("#page>div:eq("+(i-2)+")").text()!=""+pageCount){
+				pageCount+=1;
+			}
+			else{
+				return;
+			}
 		}
 		else if(page=="..."){
-			pageCount+=4;
+			if($(this).prev().text()=="1"){
+				pageCount-=4;
+			}
+			else{
+				pageCount+=4;
+			}
 		}
 		else{
 			pageCount=parseInt(page);
@@ -96,6 +107,7 @@ window.onload=function(){
 			data:{"page":pageCount},
 			success:function(data){
 				$("#content").html(data.html);
+				scrollCount=0;
 				window.scrollTo(0,0);
 				if($("#content h2").length%8!=0||(pageCount-1)*24+$("#content h2").length==parseInt(data.passageCount)){
 					$("#page").html("");
@@ -105,6 +117,7 @@ window.onload=function(){
 				}
 				else{
 					$("#page").html("More");
+					scrollHeight=$(document).height();
 					$(window).scroll(ajaxScroll);
 				}
 			},
@@ -516,9 +529,9 @@ window.onload=function(){
 
 	//正文区点击
 	//标题
-	$(".title,.summary").click(function(){
-		window.open($(this).attr("data-url"),"_self");
-	});
+	$("#content").delegate(".title,.summary","click",function(){
+		window.open($(this).attr("data-url"),"_blank");
+	})
 	//图片滚动事件
 	var w=parseInt($(".pic_box img:first").css("width"))+10;
 	if(window.navigator.userAgent.indexOf("Firefox")<0){
@@ -658,14 +671,19 @@ window.onload=function(){
 				$("#"+id).append("<div>></div>");
 				grid=pages;
 				$("#"+id+" div").click(function(){
-					var c=parseInt($(this).text());
+					if(pn){
+						var c=parseInt(pn);
+					}
+					else{
+						var c=parseInt($(this).text());
+					}
 					if(!c){
 						if(pagerecord<pages)
 							c=pagerecord+1;
 						else
 							return;
 					}
-					$("#"+id+" div:eq("+gridrecord+")").css("background-color","white");
+					//$("#"+id+" div:eq("+gridrecord+")").css("background-color","white");
 					$("#"+id+" div:eq("+(c-1)+")").css("background-color","#c1c1c1");
 					gridrecord=c-1;
 					pagerecord=c;
@@ -697,7 +715,7 @@ window.onload=function(){
 						for(var i=2;i<(max-1);i++){
 							$("#"+id+" div:eq("+i+")").text(i+c-(half+1));
 						}
-						$("#"+id+" div:eq("+gridrecord+")").css("background-color","white");
+						//$("#"+id+" div:eq("+gridrecord+")").css("background-color","white");
 						$("#"+id+" div:eq("+(half+1)+")").css("background-color","#c1c1c1");
 						gridrecord=(half+1);
 					}
@@ -706,7 +724,7 @@ window.onload=function(){
 						for(var i=1;i<(max-1);i++){
 							$("#"+id+" div:eq("+i+")").text(i+1);
 						}
-						$("#"+id+" div:eq("+gridrecord+")").css("background-color","white");
+						//$("#"+id+" div:eq("+gridrecord+")").css("background-color","white");
 						$("#"+id+" div:eq("+(c-1)+")").css("background-color","#c1c1c1");
 						gridrecord=c-1;
 					}
@@ -715,7 +733,7 @@ window.onload=function(){
 						for(var i=2;i<max;i++){
 							$("#"+id+" div:eq("+i+")").text(i+pages-max);
 						}
-						$("#"+id+" div:eq("+gridrecord+")").css("background-color","white");
+						//$("#"+id+" div:eq("+gridrecord+")").css("background-color","white");
 						$("#"+id+" div:eq("+(max-(pages-c))+")").css("background-color","#c1c1c1");
 						gridrecord=max-(pages-c);
 					}

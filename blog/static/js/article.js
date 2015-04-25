@@ -412,15 +412,20 @@ window.onload=function(){
 		else {
 			flag=0;
 		}
-		//从顶滑下
-		if(flag==1&&scrollFlag!=flag){
-			$("#nav_top").css("background-color","rgba(102,153,255,0.8)");
-			scrollFlag=1;
+		if(scrollFlag==flag){
+			return;
 		}
-		//从下滑到顶
-		else if(flag==0&&scrollFlag!=flag){
-			$("#nav_top").css("background-color","rgba(102,153,255,1)");
-			scrollFlag=0;
+		else{
+			//从顶滑下
+			if(flag==1){
+				$("#nav_top").css("background-color","rgba(102,153,255,0.8)");
+				scrollFlag=1;
+			}
+			//从下滑到顶
+			else if(flag==0){
+				$("#nav_top").css("background-color","rgba(102,153,255,1)");
+				scrollFlag=0;
+			}
 		}
 	});
 	//返回按钮
@@ -502,7 +507,7 @@ window.onload=function(){
 		commentPassword.value=password;
 		var commentForm=document.createElement("form");
 		commentForm.action="/saveComment";
-		commentForm.method="GET";
+		commentForm.method="POST";
 		commentForm.appendChild(commentText);
 		commentForm.appendChild(commentEmail);
 		commentForm.appendChild(commentPassword);
@@ -526,14 +531,19 @@ window.onload=function(){
 				$("#"+id).append("<div>></div>");
 				grid=pages;
 				$("#"+id+" div").click(function(){
-					var c=parseInt($(this).text());
+					if(pn){
+						c=parseInt(pn);
+					}
+					else{
+						var c=parseInt($(this).text());
+					}
 					if(!c){
 						if(pagerecord<pages)
 							c=pagerecord+1;
 						else
 							return;
 					}
-					$("#"+id+" div:eq("+gridrecord+")").css("background-color","white");
+					//$("#"+id+" div:eq("+gridrecord+")").css("background-color","white");
 					$("#"+id+" div:eq("+(c-1)+")").css("background-color","#c1c1c1");
 					gridrecord=c-1;
 					pagerecord=c;
@@ -548,16 +558,27 @@ window.onload=function(){
 				grid=max+1;
 				$("#"+id+" div").click(function(){
 					if(pn){
-						var c=parseInt(pn);
+						var c=pn;
 					}
 					else{
-						var c=parseInt($(this).text());
+						var c=$(this).text();
 					}
-					if(!c){
+					if(c==">"){
 						if(pagerecord<pages)
 							c=pagerecord+1;
 						else
 							return;
+					}
+					else if(c=="..."){
+						if($(this).prev().text()=="1"){
+							c=pagerecord-4;
+						}
+						else{
+							c=pagerecord+4;
+						}
+					}
+					else{
+						c=parseInt(c);
 					}
 					if(c-half>2&&c+half<pages-1){
 						$("#"+id+" div:eq("+1+")").text("...");
@@ -565,7 +586,7 @@ window.onload=function(){
 						for(var i=2;i<(max-1);i++){
 							$("#"+id+" div:eq("+i+")").text(i+c-(half+1));
 						}
-						$("#"+id+" div:eq("+gridrecord+")").css("background-color","white");
+						//$("#"+id+" div:eq("+gridrecord+")").css("background-color","white");
 						$("#"+id+" div:eq("+(half+1)+")").css("background-color","#c1c1c1");
 						gridrecord=(half+1);
 					}
@@ -574,7 +595,7 @@ window.onload=function(){
 						for(var i=1;i<(max-1);i++){
 							$("#"+id+" div:eq("+i+")").text(i+1);
 						}
-						$("#"+id+" div:eq("+gridrecord+")").css("background-color","white");
+						//$("#"+id+" div:eq("+gridrecord+")").css("background-color","white");
 						$("#"+id+" div:eq("+(c-1)+")").css("background-color","#c1c1c1");
 						gridrecord=c-1;
 					}
@@ -583,7 +604,7 @@ window.onload=function(){
 						for(var i=2;i<max;i++){
 							$("#"+id+" div:eq("+i+")").text(i+pages-max);
 						}
-						$("#"+id+" div:eq("+gridrecord+")").css("background-color","white");
+						//$("#"+id+" div:eq("+gridrecord+")").css("background-color","white");
 						$("#"+id+" div:eq("+(max-(pages-c))+")").css("background-color","#c1c1c1");
 						gridrecord=max-(pages-c);
 					}
@@ -595,6 +616,45 @@ window.onload=function(){
 			}
 			
 		}
-	showPage(200,"page",10);
-	$("#page div:first").click();
+	var pageCount=1;
+	showPage(parseInt($("#comments_area").attr("data-n")),"page",pageCount);
+	$("#page div").click(pageClick);
+	function pageClick(){
+		var page=$(this).text();
+		if(page==">"){
+			var i=$("#page>div").length;
+			if($("#page>div:eq("+(i-2)+")").text()!=""+pageCount){
+				pageCount+=1;
+			}
+			else{
+				return;
+			}
+		}
+		else if(page=="..."){
+			if($(this).prev().text()=="1"){
+				pageCount-=4;
+			}
+			else{
+				pageCount+=4;
+			}
+		}
+		else{
+			pageCount=parseInt(page);
+		}
+		$.ajax({
+			url:"moreComment",
+			type:"post",
+			data:{"page":pageCount},
+			success:function(data){
+				$("#comments_area").html(data.html);
+				$("#page").html("");
+				showPage(data.commentCount,"page",pageCount);
+				$("#page div:first").click();
+				$("#page div").click(pageClick);
+			},
+			error:function(){
+				alert("页码错误");
+			}
+		});
+	}
 }

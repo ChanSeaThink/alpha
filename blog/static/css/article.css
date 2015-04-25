@@ -388,7 +388,7 @@ textarea
 	margin-top:10px;
 	text-indent:0px;
 	}
-#username
+.username
 	{
 	float:left;
 	cursor:pointer;
@@ -417,7 +417,6 @@ textarea
 	}
 #page div:first-child
 	{
-	background-color:#c1c1c1;
 	border-top-left-radius:3px;
 	border-bottom-left-radius:3px;
 	}
