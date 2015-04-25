@@ -642,9 +642,13 @@ window.onload=function(){
 	//页码显示函数
 		function showPage(n,id,pn){
 			//根据显示项数目生成Ajax式页码栏
+			if(n<24){
+				$("#"+id).html("No More");
+				return;
+			}
 			var max=10;
 			var half=Math.floor((max-1)/2);
-			var pages=Math.ceil(n/8);
+			var pages=Math.ceil(n/24);
 			var gridrecord=0;
 			var grid,pagerecord=1;
 			if(pages<=max){
