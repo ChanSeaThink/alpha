@@ -488,8 +488,9 @@ window.onload=function(){
 			type:"post",
 			data:{"commentText":$("#comment").html()},
 			success:function(data){
+				$("#comment").html("<p> </p><p><br></p>");
 				$("#comments_area").html(data.html);
-				$(window).scrollTop($("#comments_area").offset().top);
+				$(window).scrollTop($("#comments_area").offset().top-90);
 				$("#page").html("");
 				pageCount=1;
 				showPage(data.commentCount,"page",pageCount);
@@ -610,6 +611,7 @@ window.onload=function(){
 		}
 	var pageCount=1;
 	showPage(parseInt($("#comments_area").attr("data-n")),"page",pageCount);
+	$("#page div:first").click();
 	$("#page div").click(pageClick);
 	function pageClick(){
 		var page=$(this).text();
@@ -630,6 +632,9 @@ window.onload=function(){
 				pageCount+=4;
 			}
 		}
+		else if(pageCount==parseInt(page)){
+			return;
+		}
 		else{
 			pageCount=parseInt(page);
 		}
@@ -639,6 +644,7 @@ window.onload=function(){
 			data:{"page":pageCount},
 			success:function(data){
 				$("#comments_area").html(data.html);
+				$(window).scrollTop($("#comments_area").offset().top-90);
 				$("#page").html("");
 				showPage(data.commentCount,"page",pageCount);
 				$("#page div:first").click();

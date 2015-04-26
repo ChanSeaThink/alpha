@@ -17,7 +17,7 @@ textarea
 	width:100%;
 	padding:10px 0 20px 0;
 	background-color:#6699ff;
-	z-index:1;
+	z-index:4;
 	}
 #title_top
 	{
@@ -363,7 +363,7 @@ textarea
 	{
 	width:40%;
 	}
-#kabe
+.kabe
 	{
 	position:absolute;
 	top:0px;
@@ -378,7 +378,7 @@ textarea
 	opacity:0.5;
 	z-index:3;
 	}
-#kabe img
+.kabe img
 	{
 	position:relative;
 	top:3px;
