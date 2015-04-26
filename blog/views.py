@@ -41,7 +41,7 @@ def passage(request, ID):
     commentObjLs = Comment.objects.filter(PassageID = passage)[0:10]
     if username == '':
         #print '---->1'
-        return render_to_response('article.html', {'logined':username, 'passage':passage, 'commentObjLs':commentObjLs})
+        return render_to_response('article.html', {'logined':username, 'passage':passage, 'commentObjLs':commentObjLs, 'ban':''})
     else:
         permission = request.session.get('permission', '')
         if permission >= 2:
@@ -49,7 +49,11 @@ def passage(request, ID):
         else:
             writePermission = ''
         #print '---->2'
-        return render_to_response('article.html', {'logined':username, 'username':username, 'passage':passage, 'writePermission':writePermission, 'commentObjLs':commentObjLs})
+        if permission < 1:
+            ban = 'Yes'
+        else:
+            ban = ''
+        return render_to_response('article.html', {'logined':username, 'username':username, 'passage':passage, 'writePermission':writePermission, 'commentObjLs':commentObjLs, 'ban':ban})
 
 def writting(request):
     username = request.session.get('username', '')

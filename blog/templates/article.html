@@ -72,7 +72,9 @@
         		{% if not logined %}
 				<div class="kabe">登录后才可以评论~<img src="{% static "img/article/smiley2.png" %}"></div>
 				{% endif %}
+				{% if ban %}
 				<div class="kabe">小黑屋内无法发言~<img src="{% static "img/article/smiley2.png" %}"></div>
+				{% endif %}
 			</div>
 			<div id="edit">
 				<div id="send_message">发表评论</div>
