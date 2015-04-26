@@ -164,7 +164,7 @@ def saveComment(request):
     commentObj.Time = datetime.now()
     commentObj.Content = commentText
     commentObj.save()
-    commentObjLs = Comment.objects.all()[0:10]
+    commentObjLs = Comment.objects.filter(id = passageID)[0:10]
     t = get_template('moreComment.html')
     c = Context({'commentObjLs':commentObjLs})
     html = t.render(c)
@@ -348,10 +348,10 @@ def morePassage(request):
 
 def moreComment(request):
     pageNum = int(request.POST['page'])
-    commentObjLs = Comment.objects.all()[10 * ( pageNum - 1 ):10 * ( pageNum - 1 ) + 10]
+    passageObj = Passage.objects.get(id = int(request.META['HTTP_REFERER'].split('/passage/')[1]))
+    commentObjLs = Comment.objects.filter(id = passageObj)[10 * ( pageNum - 1 ):10 * ( pageNum - 1 ) + 10]
     t = get_template('moreComment.html')
     c = Context({'commentObjLs':commentObjLs})
-    passageObj = Passage.objects.get(id = int(request.META['HTTP_REFERER'].split('/passage/')[1]))
     html = t.render(c)
     jsonObject = json.dumps({'html':html, 'commentCount':passageObj.CommentTimes},ensure_ascii = False)
     #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
