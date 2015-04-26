@@ -164,7 +164,7 @@ def saveComment(request):
     commentObj.Time = datetime.now()
     commentObj.Content = commentText
     commentObj.save()
-    commentObjLs = Comment.objects.filter(id = passageID)[0:10]
+    commentObjLs = Comment.objects.filter(PassageID = passageID)[0:10]
     t = get_template('moreComment.html')
     c = Context({'commentObjLs':commentObjLs})
     html = t.render(c)
@@ -349,7 +349,7 @@ def morePassage(request):
 def moreComment(request):
     pageNum = int(request.POST['page'])
     passageObj = Passage.objects.get(id = int(request.META['HTTP_REFERER'].split('/passage/')[1]))
-    commentObjLs = Comment.objects.filter(id = passageObj)[10 * ( pageNum - 1 ):10 * ( pageNum - 1 ) + 10]
+    commentObjLs = Comment.objects.filter(PassageID = passageObj)[10 * ( pageNum - 1 ):10 * ( pageNum - 1 ) + 10]
     t = get_template('moreComment.html')
     c = Context({'commentObjLs':commentObjLs})
     html = t.render(c)
