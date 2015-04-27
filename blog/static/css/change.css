@@ -59,22 +59,21 @@
 }
 #user_face
 	{
-	width:60px;
-	height:60px;
-	border-radius:60px;
+	width:63px;
+	height:63px;
 	background-color:white;
 	cursor:pointer;
 	}
 #triangle
 	{
-	margin-top:25px;
+	margin-top:26px;
 	border-top:solid 10px white;
 	border-left:solid 6px transparent;
 	border-right:solid 6px transparent;
 	}
 #uname
 	{
-	margin:17px 10px 0 10px;
+	margin:19px 10px 0 10px;
 	color:white;
 	}
 #list_top

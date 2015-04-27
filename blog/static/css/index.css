@@ -63,10 +63,10 @@ ul
 }
 #user_face
 	{
-	width:60px;
-	height:60px;
-	border-radius:60px;
+	width:63px;
+	height:63px;
 	background-color:white;
+	overflow:hidden;
 	cursor:pointer;
 	}
 #triangle
@@ -78,7 +78,7 @@ ul
 	}
 #uname
 	{
-	margin:17px 10px 0 10px;
+	margin:18px 10px 0 10px;
 	color:white;
 	}
 #list_top
