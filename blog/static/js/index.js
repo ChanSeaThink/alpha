@@ -161,6 +161,9 @@ window.onload=function(){
 	$("#list_writting").click(function(){
 		window.open("/writting","_self");
 	});
+	$("#list_setting").click(function(){
+		window.open("/setting","_self");
+	});
 	$("#list_logout").click(function(){
 		var form=document.createElement("form");
 		form.method="get";

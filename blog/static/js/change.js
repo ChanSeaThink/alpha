@@ -37,6 +37,9 @@ window.onload=function(){
 		var src2=src.replace(/paperplane2/,"paperplane");
 		$("#list_logout img").attr({"src":src2});
 	});
+	$("#list_setting").click(function(){
+		window.open("/setting","_self");
+	});
 	$("#list_logout").click(function(){
 		var form=document.createElement("form");
 		form.method="get";

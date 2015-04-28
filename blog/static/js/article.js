@@ -41,6 +41,9 @@ window.onload=function(){
 	$("#list_edit").click(function(){
 		window.open($("#article").attr("data-url"),"_self");
 	});
+	$("#list_setting").click(function(){
+		window.open("/setting","_self");
+	});
 	$("#list_logout").click(function(){
 		var form=document.createElement("form");
 		form.method="get";
