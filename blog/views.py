@@ -56,7 +56,17 @@ def passage(request, ID):
         return render_to_response('article.html', {'logined':username, 'username':username, 'passage':passage, 'writePermission':writePermission, 'commentObjLs':commentObjLs, 'ban':ban})
 
 def setting(request):
-    return render_to_response('setting.html')
+    username = request.session.get('username', '')
+    permission = request.session.get('permission', '')
+    if username == '':
+        return HttpResponseRedirect('/index')
+    else:
+        if permission >= 2:
+            writePermission = 'OK'
+        else:
+            writePermission = ''
+        usernameObj = User.objects.get(UserName = username)
+        return render_to_response('setting.html', {'username':username, 'writePermission':writePermission, 'usernameObj':usernameObj})
 
 def writting(request):
     username = request.session.get('username', '')
@@ -212,6 +222,10 @@ def savePicture(request):
         return HttpResponse(jsonObject,content_type="application/json")
     else:
         return HttpResponse('图片上传错误。')
+
+def saveSettings(request):
+    print request.POST
+    return HttpResponse('Get it!')
 
 def showPicture(request, ImgName):
     '''username = request.session.get('username', '')

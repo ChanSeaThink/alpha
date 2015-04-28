@@ -18,14 +18,16 @@
 		</div>
 		<div id="user">
 			<div id="triangle"></div>
-			<div id="uname">Trzinory</div>
-			<div id="user_face"><img src=""></div>
+			<div id="uname">{{ username }}</div>
+			<div id="user_face"><img src="http://identicons.io/{{ username }}.png?size=63"></div>
 			<div id="list_top">
 				<ul>
+                    {% if writePermission %}
 					<li id="list_writting">
 						<img src="{% static "img/pen.png" %}">
 						<p>写文章</p>
 					</li>
+                    {% endif %}
 					<li id="list_setting">
 						<img src="{% static "img/settings.png" %}">
 						<p>设置</p>
@@ -68,13 +70,13 @@
     			-->
     			<tr class="tr_option">
     				<td class="left">E-mail</td>
-    				<td class="right">123@123.123</td>
+    				<td class="right">{{ usernameObj.UserAccount }}</td>
     			</tr>
     			<tr class="tr_option" id="uname_row">
     				<td class="left">用户名</td>
     				<td class="right">
     					<!--<span class="tran"></span>-->
-    					<span id="user_name">Trzinory</span>
+    					<span id="user_name">{{ username }}</span>
     					<span id="uname_edit">编辑</span>
     					<input id="uname_input" type="text" name="username" maxlength="8">
     					<span class="hint"></span>
