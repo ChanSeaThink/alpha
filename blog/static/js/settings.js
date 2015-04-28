@@ -191,6 +191,8 @@ window.onload=function(){
 				$.ajax({
 					url:"/saveSettings",
 					type:"post",
+					contentType:false,
+					processData:false,
 					data:formdata,
 					success:function(data){
 						if(data.username){
@@ -200,7 +202,9 @@ window.onload=function(){
 							$(".set_password:eq(0) .hint").text(data.password);
 						}
 					},
-					error:function(){}
+					error:function(){
+						alert("error");
+					}
 				});//*/
 			}
 		}
