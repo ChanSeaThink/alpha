@@ -8,6 +8,7 @@ import time, random, json, re, Image, os
 from datetime import datetime
 from django.conf import settings
 from django.template import Template, Context
+from hashlib import sha1
 # Create your views here.
 def index(request):
     username = request.session.get('username', '')
@@ -224,8 +225,72 @@ def savePicture(request):
         return HttpResponse('图片上传错误。')
 
 def saveSettings(request):
-    print request.POST
-    return HttpResponse('Get it!')
+    username = request.session.get('username', '')
+    newname = request.POST['username']
+    oldpassword = request.POST['opassword']
+    newpassword = request.POST['newpassword1']
+
+    if newname != '' and newpassword == '':
+        name_exist = User.objects.filter(UserName__exact=newname)
+        if name_exist:
+            jsonObject = json.dumps({'username':'用户名已存在!'},ensure_ascii = False)
+            #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+            return HttpResponse(jsonObject,content_type="application/json")
+        else:
+            userObj = User.objects.get(UserName = username)
+            userObj.UserName = newname
+            userObj.save()
+            del request.session['username']
+            request.session['username'] = newname
+            jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+            #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+            return HttpResponse(jsonObject,content_type="application/json")
+    elif newname == '' and newpassword != '':
+        userObj = User.objects.get(UserName = username)
+        shpw = sha1()
+        shpw.update(oldpassword + str(userObj.Time)[0:19])
+        spw = shpw.hexdigest()
+        if spw != userObj.UserPassword:
+            jsonObject = json.dumps({'password':'密码错误请重新输入!'},ensure_ascii = False)
+            #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+            return HttpResponse(jsonObject,content_type="application/json")
+        else:
+            shpw.update(newpassword + str(userObj.Time)[0:19])
+            spw = shpw.hexdigest()
+            userObj.UserPassword = spw
+            userObj.save()
+            jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+            #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+            return HttpResponse(jsonObject,content_type="application/json")
+    else:
+        name_exist = User.objects.filter(UserName__exact=newname)
+        if name_exist:
+            jsonObject = json.dumps({'username':'用户名已存在!'},ensure_ascii = False)
+            #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+            return HttpResponse(jsonObject,content_type="application/json")
+
+        userObj = User.objects.get(UserName = username)
+        shpw = sha1()
+        shpw.update(oldpassword + str(userObj.Time)[0:19])
+        spw = shpw.hexdigest()
+        if spw != userObj.UserPassword:
+            jsonObject = json.dumps({'password':'密码错误请重新输入!'},ensure_ascii = False)
+            #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+            return HttpResponse(jsonObject,content_type="application/json")
+
+        userObj = User.objects.get(UserName = username)
+        serObj.UserName = newname
+        userObj.save()
+        del request.session['username']
+        request.session['username'] = newname
+
+        shpw.update(newpassword + str(userObj.Time)[0:19])
+        spw = shpw.hexdigest()
+        userObj.UserPassword = spw
+        userObj.save()
+        jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
+        #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
+        return HttpResponse(jsonObject,content_type="application/json")
 
 def showPicture(request, ImgName):
     '''username = request.session.get('username', '')
