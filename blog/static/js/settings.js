@@ -199,7 +199,7 @@ window.onload=function(){
 							$("#uname_row .hint").text(data.username);
 						}
 						if(data.password){
-							$(".set_password:eq(0) .hint").text(data.password);
+							$(".set_password:eq(0)").next().text(data.password);
 						}
 					},
 					error:function(){

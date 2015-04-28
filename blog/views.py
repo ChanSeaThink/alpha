@@ -3,6 +3,7 @@ from django.template.loader import get_template
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from blog.models import Passage, Comment, Picture, CachePicture, DataCount
+from blog.forms import PaswordForm
 from lnr.models import User
 import time, random, json, re, Image, os
 from datetime import datetime
@@ -255,8 +256,9 @@ def saveSettings(request):
             #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
             return HttpResponse(jsonObject,content_type="application/json")
         else:
-            shpw.update(newpassword + str(userObj.Time)[0:19])
-            spw = shpw.hexdigest()
+            shpw1 = sha1()
+            shpw1.update(newpassword + str(userObj.Time)[0:19])
+            spw = shpw1.hexdigest()
             userObj.UserPassword = spw
             userObj.save()
             jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
@@ -284,8 +286,9 @@ def saveSettings(request):
         del request.session['username']
         request.session['username'] = newname
 
-        shpw.update(newpassword + str(userObj.Time)[0:19])
-        spw = shpw.hexdigest()
+        shpw1 = sha1()
+        shpw1.update(newpassword + str(userObj.Time)[0:19])
+        spw = shpw1.hexdigest()
         userObj.UserPassword = spw
         userObj.save()
         jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
@@ -456,5 +459,33 @@ def updateDataCount(request):
             dataCountObjLs[0].PassageCount = len(Passage.objects.all())
             dataCountObjLs[0].save()
         return HttpResponse('Update Success.')
+    else:
+        return HttpResponseRedirect('/index')
+
+def newPassword(request):
+    username = request.session.get('username', '')
+    permission = request.session.get('permission', '')
+    if username != '' and permission > 2:
+        if request.method == 'POST':
+            form = PaswordForm(request.POST)
+            if form.is_valid():
+                data = form.cleaned_data
+                nt = datetime.now()
+                seed = sha1()
+                seed.update(str(nt))
+                shaseed = seed.hexdigest()
+                newpassword = shaseed[0:8]
+                userObj = User.objects.get(UserAccount = data['email'])
+                shpw1 = sha1()
+                shpw1.update(newpassword + str(userObj.Time)[0:19])
+                spw = shpw1.hexdigest()
+                userObj.UserPassword = spw
+                userObj.save()
+                return HttpResponse(newpassword)
+            else:
+                return HttpResponse('data error')
+        else:
+            form = PaswordForm()
+        return render_to_response('newPassword.html',{'form':form})
     else:
         return HttpResponseRedirect('/index')
