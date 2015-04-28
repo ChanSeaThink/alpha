@@ -228,6 +228,10 @@ def savePicture(request):
 def saveSettings(request):
     username = request.session.get('username', '')
     newname = request.POST['username']
+
+    if username == '':
+        return HttpResponseRedirect('/index')
+
     oldpassword = request.POST['opassword']
     newpassword = request.POST['newpassword1']
 
