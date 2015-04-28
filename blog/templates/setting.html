@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Settings</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="{% static "css/settings.css" %}" rel="stylesheet">
+<script src="{% static "js/jquery-1.11.2.js" %}"></script>
+<script src="{% static "js/settings.js" %}"></script>
+</head>
+<body>
+	<div id="nav_top">
+		<div id="backwards">
+			<img src="{% static "img/article/backwards.png" %}">
+		</div>
+		<div id="user">
+			<div id="triangle"></div>
+			<div id="uname">Trzinory</div>
+			<div id="user_face"><img src=""></div>
+			<div id="list_top">
+				<ul>
+					<li id="list_writting">
+						<img src="{% static "img/pen.png" %}">
+						<p>写文章</p>
+					</li>
+					<li id="list_setting">
+						<img src="{% static "img/settings.png" %}">
+						<p>设置</p>
+					</li>
+					<li id="list_logout">
+						<img src="{% static "img/paperplane.png" %}">
+						<p>注销</p>
+						<div class="clear"></div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div>
+			<input id="search" placeholder="搜索">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<p id="fill"></p>
+		<p id="settings"><span>设置</span></p>
+	<div id="set_nav">
+		<ul>
+			<li>个人资料</li>
+			<!--
+			<li>个人收藏</li>
+			<li>个人主题</li>
+			<li>个人评论</li>
+			-->
+			<div class="clear"></div>
+		</ul>
+		<div class="clear"></div>
+	</div>
+    <div id="box">
+    	<form id="settings_form">
+    		<table>
+    			<!--
+    			<tr>
+    				<td>头像</td>
+    				<td><span class="tran2"></span><img src=""></td>
+    			</tr>
+    			-->
+    			<tr class="tr_option">
+    				<td class="left">E-mail</td>
+    				<td class="right">123@123.123</td>
+    			</tr>
+    			<tr class="tr_option" id="uname_row">
+    				<td class="left">用户名</td>
+    				<td class="right">
+    					<!--<span class="tran"></span>-->
+    					<span id="user_name">Trzinory</span>
+    					<span id="uname_edit">编辑</span>
+    					<input id="uname_input" type="text" name="username" maxlength="8">
+    					<span class="hint"></span>
+    				</td>
+    			</tr>
+    			<tr class="tr_option">
+    				<td class="left">原密码</td>
+    				<td class="right"><!--<span class="tran"></span>--><input class="set_password" type="password" maxlength="16" name="opassword"><span class="hint"></span></td>
+    			</tr>
+    			<tr class="tr_option">
+    				<td class="left">新密码</td>
+    				<td class="right"><!--<span class="tran"></span>--><input class="set_password" type="password" maxlength="16" name="newpassword1"><span class="hint"></span></td>
+    			</tr>
+    			<tr class="tr_option">
+    				<td class="left">确认密码</td>
+    				<td class="right"><!--<span class="tran"></span>--><input class="set_password" type="password" maxlength="16" name="newpassword2"><span class="hint"></span></td>
+    			</tr>
+    			<tr id="set_confirm">
+    				<td class="left"></td>
+    				<td class="right"><div id="send">确定</div></td>
+    			</tr>
+    		</table>
+    	</form>
+    </div>
+    <script type="text/javascript">
+    	//$("tr:even,tr:even input").css({"background-color":"#e1e1e1"});
+    	//$("tr:odd,tr:odd input").css({"background-color":"#f1f1f1"});
+    	//$("tr:even,tr:even input").css({"border":"2px solid #6699ff"});
+    	//$("td.left").css({"width":"170px","text-align":"center"});
+    	//$("td.right").css({"width":"370px","text-align":"center"});
+    	//$("td").css({"text-align":"center"});
+    </script>
+</body>
+</html>

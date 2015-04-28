@@ -55,6 +55,9 @@ def passage(request, ID):
             ban = ''
         return render_to_response('article.html', {'logined':username, 'username':username, 'passage':passage, 'writePermission':writePermission, 'commentObjLs':commentObjLs, 'ban':ban})
 
+def setting(request):
+    return render_to_response('setting.html')
+
 def writting(request):
     username = request.session.get('username', '')
     permission = request.session.get('permission', '')
