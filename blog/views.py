@@ -12,7 +12,7 @@ from django.template import Template, Context
 from hashlib import sha1
 # Create your views here.
 def index(request):
-    username = request.session.get('username', '')
+    userid = request.session.get('userid', '')
     #print '(',username,')'
     passageLs = Passage.objects.all()[0:8]
     #for pl in passageLs:
@@ -23,10 +23,11 @@ def index(request):
         indexDic.append({'passage':passage, 'thumnailLs':thumnailLs})
     #for ss in indexDic:
     #    print ss
-    if username == '':
+    if userid == '':
         #print '---->1'
-        return render_to_response('index.html', {'logined':username, 'dic':indexDic})
+        return render_to_response('index.html', {'logined':userid, 'dic':indexDic})
     else:
+        username = User.objects.get(id = userid).UserName
         permission = request.session.get('permission', '')
         if permission >= 2:
             writePermission = 'OK'
@@ -36,14 +37,14 @@ def index(request):
         return render_to_response('index.html', {'logined':username, 'username':username, 'dic':indexDic, 'writePermission':writePermission})
 
 def passage(request, ID):
-    username = request.session.get('username', '')
+    userid = request.session.get('userid', '')
     passage = Passage.objects.get(id = int(ID))
     passage.ReadTimes += 1
     passage.save()
     commentObjLs = Comment.objects.filter(PassageID = passage)[0:10]
-    if username == '':
+    if userid == '':
         #print '---->1'
-        return render_to_response('article.html', {'logined':username, 'passage':passage, 'commentObjLs':commentObjLs, 'ban':''})
+        return render_to_response('article.html', {'logined':userid, 'passage':passage, 'commentObjLs':commentObjLs, 'ban':''})
     else:
         permission = request.session.get('permission', '')
         if permission >= 2:
@@ -55,45 +56,48 @@ def passage(request, ID):
             ban = 'Yes'
         else:
             ban = ''
-        return render_to_response('article.html', {'logined':username, 'username':username, 'passage':passage, 'writePermission':writePermission, 'commentObjLs':commentObjLs, 'ban':ban})
+        username = User.objects.get(id = userid).UserName
+        return render_to_response('article.html', {'logined':userid, 'username':username, 'passage':passage, 'writePermission':writePermission, 'commentObjLs':commentObjLs, 'ban':ban})
 
 def setting(request):
-    username = request.session.get('username', '')
+    userid = request.session.get('userid', '')
     permission = request.session.get('permission', '')
-    if username == '':
+    if userid == '':
         return HttpResponseRedirect('/index')
     else:
         if permission >= 2:
             writePermission = 'OK'
         else:
             writePermission = ''
-        usernameObj = User.objects.get(UserName = username)
-        return render_to_response('setting.html', {'username':username, 'writePermission':writePermission, 'usernameObj':usernameObj})
+        usernameObj = User.objects.get(id = userid)
+        return render_to_response('setting.html', {'username':usernameObj.UserName, 'writePermission':writePermission, 'usernameObj':usernameObj})
 
 def writting(request):
-    username = request.session.get('username', '')
+    userid = request.session.get('userid', '')
     permission = request.session.get('permission', '')
     if permission < 2:
         return HttpResponseRedirect('/index')
 
-    if username == '':
+    if userid == '':
         return HttpResponseRedirect('/index')
     else:
+        username = User.objects.get(id = userid).UserName
         return render_to_response('writting.html', {'username':username})
 
 def change(request, ID):
-    username = request.session.get('username', '')
+    userid = request.session.get('userid', '')
     permission = request.session.get('permission', '')
     if permission < 2:
         return HttpResponseRedirect('/index')
     passageObj = Passage.objects.get(id = int(ID))
+    username = User.objects.get(id = userid).UserName
     return render_to_response('change.html', {'username':username, 'passage':passageObj})
 
 def saveWritting(request):
     #blog 应用中最重要的试图函数。
     #包括以下主要功能：1，保存博文；2，生成缩略图；3，把缓存表的图片信息移到源图表，然后清空缓存表。
-    username = request.session.get('username', '')
-    if username == '':
+    userid = request.session.get('userid', '')
+    if userid == '':
         return HttpResponseRedirect('/index')
     title = request.POST['title']
     text = request.POST['text']
@@ -108,7 +112,7 @@ def saveWritting(request):
     nt = datetime.now()
     #以下是保存博文数据到数据表中。
     passageObj = Passage()
-    writerObj = User.objects.get(UserName = username)
+    writerObj = User.objects.get(id = userid)
     passageObj.UserID = writerObj
     passageObj.Title = title
     passageObj.Time = nt
@@ -150,7 +154,7 @@ def saveWritting(request):
         picObj.save()
         cpobj.delete()
     #删除缓存表中的数据以及对应的图片。
-    deleteCachePicLs = CachePicture.objects.filter(UserName = username)
+    deleteCachePicLs = CachePicture.objects.filter(UserName = writerObj.UserName)
     for pic in deleteCachePicLs:
         os.remove(os.path.join(settings.MEDIA_ROOT, pic.ImagePath.name))
         pic.delete()
@@ -169,15 +173,20 @@ def saveWritting(request):
     return HttpResponseRedirect('/passage/'+ str(ID))
 
 def saveComment(request):
-    username = request.session.get('username', '')
+    userid = request.session.get('userid', '')
+    if userid == '':
+        return HttpResponseRedirect('/index')
+
     permission = request.session.get('permission', '')
+    if permission < 1:
+        return HttpResponseRedirect('/index')
     commentText = request.POST['commentText']
     passageID = int(request.META['HTTP_REFERER'].split('/passage/')[1])
     passageObj = Passage.objects.get(id = passageID)
     passageObj.CommentTimes += 1
     passageObj.save()
     commentObj = Comment()
-    commentObj.UserID = User.objects.get(UserName = username)
+    commentObj.UserID = User.objects.get(id = userid)
     commentObj.UserName = username
     commentObj.PassageID = passageObj
     commentObj.Time = datetime.now()
@@ -194,8 +203,8 @@ def saveComment(request):
 
 def savePicture(request):
     #print request.FILES
-    username = request.session.get('username', '')
-    if username == '':
+    userid = request.session.get('userid', '')
+    if userid == '':
         return HttpResponseRedirect('/index')
 
     if 'pic' in request.FILES:
@@ -212,7 +221,7 @@ def savePicture(request):
         image.name = addName + picName
         p = CachePicture()
         p.ImagePath = image
-        p.UserName = username
+        p.UserName = User.objects.get(id = userid).UserName
         p.ImageName = image.name
         p.save()
         #cachePictureObj = CachePicture.objects.get(ImageName = image.name)
@@ -226,9 +235,9 @@ def savePicture(request):
         return HttpResponse('图片上传错误。')
 
 def saveSettings(request):
-    username = request.session.get('username', '')
+    userid = request.session.get('userid', '')
 
-    if username == '':
+    if userid == '':
         return HttpResponseRedirect('/index')
 
     if request.POST.has_key('username'):
@@ -250,16 +259,23 @@ def saveSettings(request):
             #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
             return HttpResponse(jsonObject,content_type="application/json")
         else:
-            userObj = User.objects.get(UserName = username)
+            userObj = User.objects.get(id = userid)
+            username = userObj.UserName
             userObj.UserName = newname
             userObj.save()
-            del request.session['username']
-            request.session['username'] = newname
+            commentObjLs = Comment.objects.filter(UserID = userObj)
+            for commentObj in commentObjLs:
+                commentObj.UserName = newname
+                commentObj.save()
+            cacheObjLs = CachePicture.objects.filter(UserName = username)
+            for cacheObj in cacheObjLs:
+                cacheObj.UserName = newname
+                cacheObj.save()
             jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
             #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
             return HttpResponse(jsonObject,content_type="application/json")
     elif newname == '' and newpassword != '':
-        userObj = User.objects.get(UserName = username)
+        userObj = User.objects.get(id = userid)
         shpw = sha1()
         shpw.update(oldpassword + str(userObj.Time)[0:19])
         spw = shpw.hexdigest()
@@ -292,17 +308,23 @@ def saveSettings(request):
             #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
             return HttpResponse(jsonObject,content_type="application/json")
 
+        username = userObj.UserName
         userObj.UserName = newname
         userObj.save()
-        del request.session['username']
-        request.session['username'] = newname
-
         shpw1 = sha1()
         shpw1.update(newpassword + str(userObj.Time)[0:19])
         spw1 = shpw1.hexdigest()
         userObj.UserPassword = spw1
         userObj.save()
 
+        commentObjLs = Comment.objects.filter(UserID = userObj)
+        for commentObj in commentObjLs:
+            commentObj.UserName = newname
+            commentObj.save()
+        cacheObjLs = CachePicture.objects.filter(UserName = username)
+        for cacheObj in cacheObjLs:
+            cacheObj.UserName = newname
+            cacheObj.save()
         jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
@@ -342,8 +364,8 @@ def showThumnail(request, ImgName):
     return HttpResponse(thumnailObj.CompressedImagePath, 'image')
 
 def saveChange(request, ID):
-    username = request.session.get('username', '')
-    if username == '':
+    userid = request.session.get('userid', '')
+    if userid == '':
         return HttpResponseRedirect('/index')
     title = request.POST['title']
     text = request.POST['text']
@@ -409,6 +431,7 @@ def saveChange(request, ID):
         picObj.save()
         cpobj.delete()
     #删除缓存表中的数据以及对应的图片。
+    username = User.objects.get(id = userid).UserName
     deleteCachePicLs = CachePicture.objects.filter(UserName = username)
     for pic in deleteCachePicLs:
         os.remove(os.path.join(settings.MEDIA_ROOT, pic.ImagePath.name))
@@ -459,9 +482,9 @@ def moreComment(request):
     return HttpResponse(jsonObject,content_type="application/json")
 
 def updateDataCount(request):
-    username = request.session.get('username', '')
+    userid = request.session.get('userid', '')
     permission = request.session.get('permission', '')
-    if username != '' and permission > 2:
+    if userid != '' and permission > 2:
         dataCountObjLs = DataCount.objects.all()
         if len(dataCountObjLs) == 0:
             dataCountObj = DataCount()
@@ -475,9 +498,9 @@ def updateDataCount(request):
         return HttpResponseRedirect('/index')
 
 def newPassword(request):
-    username = request.session.get('username', '')
+    userid = request.session.get('userid', '')
     permission = request.session.get('permission', '')
-    if username != '' and permission > 2:
+    if userid != '' and permission > 2:
         if request.method == 'POST':
             form = PaswordForm(request.POST)
             if form.is_valid():
