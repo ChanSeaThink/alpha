@@ -86,7 +86,7 @@ ul
 	display:none;
 	position:absolute;
 	right:5px;
-	top:60px;
+	top:83px;
 	padding-top:20px;
 	width:160px;
 	}
@@ -244,6 +244,7 @@ ul
 	margin-bottom:14px;
 	font-size:13px;
 	line-height:20px;
+	word-break:break-all;
 	cursor:pointer;
 	}
 .date

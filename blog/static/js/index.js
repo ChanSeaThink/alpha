@@ -36,6 +36,7 @@ window.onload=function(){
 				$("#intro_top").hide();
 				$("#nav_top").css("background-color","rgba(102,153,255,0.8)");
 				$("#search").css("margin-top","15px");
+				$("#list_top").css("top","63px");
 				$("#lr").css("margin-top","17px");
 				$("#user").css("margin-top","0px");
 				scrollFlag=1;
@@ -45,6 +46,7 @@ window.onload=function(){
 				$("#intro_top").show();
 				$("#nav_top").css("background-color","rgba(102,153,255,1)");
 				$("#search").css("margin-top","25px");
+				$("#list_top").css("top","83px");
 				$("#lr").css("margin-top","27px");
 				$("#user").css("margin-top","10px");
 				scrollFlag=0;

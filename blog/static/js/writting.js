@@ -149,8 +149,8 @@ window.onload=function(){
 			if($("#write_title").val().replace(/\s/g,"").length==0){
 				alert("标题为空");
 				return;
-			}
-			var textdata=$("#write_text").html();
+			}//alert($("#write_text").html().replace(/&amp;/g,"&"));return;
+			var textdata=$("#write_text").html().replace(/&amp;/g,"&");
 			var titledata=$("#write_title").val();
 			var textform=document.createElement("form");
 			textform.method="post";
@@ -418,18 +418,20 @@ window.onload=function(){
 		}
 		//*/
 		writetext.onpaste=function(e){
+			e.preventDefault();
 			var data=e.clipboardData;
-			document.execCommand("insertText",false,data.getData("text/plain"));
-			for(var i=0;i<$("#write_text p").length;i++){
-				var s=$("#write_text p:eq("+i+")").html();
-				if(s.charCodeAt(0)==13){
-					$("#write_text p:eq("+i+")").html("<br>");
-				}
-				else if(s.charCodeAt(s.length-1)==13){
-					$("#write_text p:eq("+i+")").html(s.slice(0,-1));
+			if(data.getData("text/plain")){
+				document.execCommand("insertText",false,data.getData("text/plain"));
+				for(var i=0;i<$("#write_text p").length;i++){
+					var s=$("#write_text p:eq("+i+")").html();
+					if(s.charCodeAt(0)==13){
+						$("#write_text p:eq("+i+")").html("<br>");
+					}
+					else if(s.charCodeAt(s.length-1)==13){
+						$("#write_text p:eq("+i+")").html(s.slice(0,-1));
+					}
 				}
 			}
-			e.preventDefault();
 		}
 
 	//函数区

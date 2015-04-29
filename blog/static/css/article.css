@@ -83,7 +83,7 @@ textarea
 	display:none;
 	position:absolute;
 	right:5px;
-	top:60px;
+	top:63px;
 	padding-top:20px;
 	width:160px;
 	}
@@ -232,6 +232,7 @@ textarea
 	}
 #article h1{
 	font-size:38px;
+	word-break:break-all;
 	}
 #article_data
 	{
@@ -247,6 +248,7 @@ textarea
 	line-height:26px;
 	margin-bottom:30px;
 	font-size:16px;
+	word-break:break-all;
 	}
 #comment
 	{
@@ -402,12 +404,16 @@ textarea
 	margin-right:20px;
 	cursor:pointer;
 	}
-#comments_area div div
+.comment_text
 	{
 	float:right;
 	width:530px;
 	margin-top:10px;
 	text-indent:0px;
+	}
+.comment_text p
+	{
+	word-break:break-all;
 	}
 .username
 	{
