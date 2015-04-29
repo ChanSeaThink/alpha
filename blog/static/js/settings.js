@@ -198,7 +198,7 @@ window.onload=function(){
 			formdata.append("opassword",pas1);
 			formdata.append("newpassword1",pas2);
 			formdata.append("newpassword2",pas3);
-			a=1;
+			a=2;
 		}
 		if(pas2!=pas3){
 			$(".set_password:eq(1)").next().text("新密码两次输入不同！");
@@ -213,7 +213,7 @@ window.onload=function(){
 		else if(pas1&&pas1==pas2){
 			$(".set_password:eq(1)").next().text("新旧密码相同");
 		}
-		else if(a==1&&flag[0]&&flag[1]&&flag[2]&&flag[3]){
+		else if(a&&flag[0]&&flag[1]&&flag[2]&&flag[3]){
 			//*
 			$.ajax({
 				url:"/saveSettings",
@@ -229,10 +229,15 @@ window.onload=function(){
 						$(".set_password:eq(0)").next().text(data.password);
 					}
 					if(data.status=="success"){
-						var form=document.createElement("form");
-						form.method="get";
-						form.action="/logout";
-						form.submit();
+						if(a==2){
+							var form=document.createElement("form");
+							form.method="get";
+							form.action="/logout";
+							form.submit();
+						}
+						else if(a==1){
+							window.location.reload();
+						}
 					}
 				},
 				error:function(){
