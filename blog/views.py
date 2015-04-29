@@ -186,8 +186,9 @@ def saveComment(request):
     passageObj.CommentTimes += 1
     passageObj.save()
     commentObj = Comment()
-    commentObj.UserID = User.objects.get(id = userid)
-    commentObj.UserName = username
+    userObj = User.objects.get(id = userid)
+    commentObj.UserID = userObj
+    commentObj.UserName = userObj.UserName
     commentObj.PassageID = passageObj
     commentObj.Time = datetime.now()
     commentObj.Content = commentText
