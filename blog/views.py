@@ -236,7 +236,7 @@ def saveSettings(request):
     else:
         newname = ''
 
-    if request.POST.has_key('oldpassword'):
+    if request.POST.has_key('opassword'):
         oldpassword = request.POST['opassword']
         newpassword = request.POST['newpassword1']
     else:
@@ -270,8 +270,8 @@ def saveSettings(request):
         else:
             shpw1 = sha1()
             shpw1.update(newpassword + str(userObj.Time)[0:19])
-            spw = shpw1.hexdigest()
-            userObj.UserPassword = spw
+            spw1 = shpw1.hexdigest()
+            userObj.UserPassword = spw1
             userObj.save()
             jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
             #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
@@ -292,17 +292,17 @@ def saveSettings(request):
             #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
             return HttpResponse(jsonObject,content_type="application/json")
 
-        userObj = User.objects.get(UserName = username)
-        serObj.UserName = newname
+        userObj.UserName = newname
         userObj.save()
         del request.session['username']
         request.session['username'] = newname
 
         shpw1 = sha1()
         shpw1.update(newpassword + str(userObj.Time)[0:19])
-        spw = shpw1.hexdigest()
-        userObj.UserPassword = spw
+        spw1 = shpw1.hexdigest()
+        userObj.UserPassword = spw1
         userObj.save()
+
         jsonObject = json.dumps({'status':'success'},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
