@@ -227,13 +227,21 @@ def savePicture(request):
 
 def saveSettings(request):
     username = request.session.get('username', '')
-    newname = request.POST['username']
 
     if username == '':
         return HttpResponseRedirect('/index')
 
-    oldpassword = request.POST['opassword']
-    newpassword = request.POST['newpassword1']
+    if request.POST.has_key('username'):
+        newname = request.POST['username']
+    else:
+        newname = ''
+
+    if request.POST.has_key('oldpassword'):
+        oldpassword = request.POST['opassword']
+        newpassword = request.POST['newpassword1']
+    else:
+        oldpassword = ''
+        newpassword = ''
 
     if newname != '' and newpassword == '':
         name_exist = User.objects.filter(UserName__exact=newname)
