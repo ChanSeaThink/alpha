@@ -72,10 +72,8 @@
 		margin-top:20px;
 	}
 	.tr_option{
-		border-bottom:2px dashed #e1e1e1;
-	}
-	tr{
 		height:70px;
+		border-bottom:2px dashed #e1e1e1;
 	}
 	.tr_option:hover{
 		background-color:rgba(221,255,251,0.2);
@@ -119,6 +117,7 @@
 	#send{
 		width:100px;
 		padding:3px 0;
+		margin-top:10px;
 		font-size:20px;
 		color:white;
 		background-color:#049ff1;
