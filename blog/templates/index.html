@@ -87,7 +87,7 @@
         <div class="fill"></div>
         <div class="clear"></div>
     </div>
-    <div id="page">More</div>
+    <div id="page"></div>
     <div id="popup">
         <div id="popup_bottom"></div>
         <div id="popup_top">
@@ -154,6 +154,12 @@
     <script type="text/javascript">
         var base=$(document).width();
         $(".fill").css("width",(base-780)/2+"px");
+        if($("#content h2").length<8){
+            $("#page").text("No More");
+        }
+        else{
+            $("#page").text("More");
+        }
     </script>
 </body>
 </html>
