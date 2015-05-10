@@ -86,6 +86,11 @@ window.onload=function(){
 		var picform=document.getElementById("picform");
 		$("#file").change(function(){
 			if(/image/.test(file.files[0].type)){
+				if(file.files[0].name.length>=28){
+					picform.reset();
+					alert("文件名过长");
+					return;
+				}
 				var formdata=new FormData();
 				formdata.append("pic",file.files[0]);
 				$.ajax({
