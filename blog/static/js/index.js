@@ -64,6 +64,22 @@ window.onload=function(){
 				success:function(data){
 					scrollCount+=1;
 					$("#content").append(data.html);
+					if(window.navigator.userAgent.indexOf("Firefox")<0){
+						for(var i=scrollCount*8;i<$(".pic_box").length;i++){
+							for(var j=3;j<$(".pic_box:eq("+i+") img").length;j++){
+								var image=$(".pic_box:eq("+i+") img:eq("+j+")");
+								image.css("z-index",-j);
+								if(j>3)
+									image.css("left",-w*(j-3)/2);
+								image.css("-webkit-transform","rotateY(-60deg)");
+								image.css("transform","rotateY(-60deg)")
+							}
+
+						}
+					}
+    				for(var i=scrollCount*8;i<picbox.length;i++){
+						picbox[i].onmousewheel=picSlide;
+					}
 					scrollHeight=$(document).height();
 					if(scrollCount==2||(pageCount-1)*24+$("#content h2").length==parseInt(data.passageCount)){
 						$("#page").html("");
@@ -111,6 +127,21 @@ window.onload=function(){
 				$("#content").html(data.html);
 				scrollCount=0;
 				window.scrollTo(0,0);
+				if(window.navigator.userAgent.indexOf("Firefox")<0){
+					for(var i=scrollCount*8;i<$(".pic_box").length;i++){
+						for(var j=3;j<$(".pic_box:eq("+i+") img").length;j++){
+							var image=$(".pic_box:eq("+i+") img:eq("+j+")");
+							image.css("z-index",-j);
+							if(j>3)
+								image.css("left",-w*(j-3)/2);
+							image.css("-webkit-transform","rotateY(-60deg)");
+							image.css("transform","rotateY(-60deg)")
+						}
+					}
+				}
+   				for(var i=scrollCount*8;i<picbox.length;i++){
+					picbox[i].onmousewheel=picSlide;
+				}
 				if($("#content h2").length%8!=0||(pageCount-1)*24+$("#content h2").length==parseInt(data.passageCount)){
 					$("#page").html("");
 					showPage(data.passageCount,"page",pageCount);
@@ -243,7 +274,7 @@ window.onload=function(){
 	$("#close,#popup_bottom").click(function(){
 		$("#popup,#lr_box,#log_box,#reg_box,#log_button,#reg_button,#origin_pic,#origin_pic img").hide();
 	});
-	$(".pic_box img").click(function(){
+	$("#content").delegate(".pic_box img","click",function(){
 		$("#popup,#origin_pic").show();
 		var s=$(this).attr("src").replace(/Thumnail/,"Picture").replace(/thumnail/,"");
 		if($("#origin_pic img").attr("src")==s){
