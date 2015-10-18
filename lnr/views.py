@@ -6,8 +6,9 @@ from lnr.models import User
 import Image, ImageDraw, ImageFont, ImageFilter, random#PIL插件的文件
 from hashlib import sha1
 from datetime import datetime
+from django.conf import settings
 import cStringIO#用于把生成的图片写入内存
-import platform#用于判断操作系统
+import os#用于判断操作系统
 import json
 
 # Create your views here.
@@ -109,13 +110,9 @@ def getCAPTCHA(request):
     point_color = ['red', 'blue', 'yellow', 'green', 'brown']
     font_size = 25
 
-    nowsys = platform.system()
-    if nowsys == 'Darwin':
-        font = ImageFont.truetype('/Library/Fonts/Arial.ttf',font_size)
-    elif nowsys == 'Windows':
-        font = ImageFont.truetype('Arial.ttf',font_size)
-    else:
-        return HttpResponse('system Error From getCAPTCHA---->nowsys')
+    font_file = os.path.join(settings.BASE_DIR, 'static/fonts/arial.ttf')
+    font = ImageFont.truetype(font_file, font_size) 
+    
     #新建画布
     im = Image.new('RGB',(img_width,img_height),background)
     draw = ImageDraw.Draw(im)
