@@ -23,7 +23,7 @@
 		<div id="user">
 			<div id="triangle"></div>
 			<div id="uname">{{ username }}</div>
-			<div id="user_face"><img src="http://identicons.io/{{ username }}.png?size=63"></div>
+			<div id="user_face"><img src=""></div>
 			<div id="list_top">
 				<ul>
                     {% if writePermission %}
@@ -91,7 +91,7 @@
 			<div id="comments_area" data-n="{{ passage.CommentTimes }}">
 			    {% for commentObj in commentObjLs %}
 				<div>
-					<img src="http://identicons.io/{{ commentObj.UserName }}.png?size=49">
+					<img src="">
 					<p class="username">{{ commentObj.UserName }}</p>
 					<p class="time">{{ commentObj.Time }}</p>
 					<div class="comment_text">{{ commentObj.Content | safe }}</div>
